@@ -264,7 +264,7 @@ header a,
     padding-left: 90px !important; /* Adjust this number to align perfectly with your images */
 }
 /* Updated Checkout Button - Correct color and heavy look */
-.btn-checkout {
+.btn-maroon-lg {
     background-color: #7A2E2E; /* Match the title color exactly */
     color: white;
     border: none;
@@ -282,8 +282,9 @@ header a,
     transition: background 0.2s;
 }
 
-.btn-checkout:hover {
-    background-color: #5a2121;
+.btn-maroon-lg:hover {
+    background-color: #9f3636;
+    color: #f8eded;
 }
 
 /* Ensuring the summary section is right-aligned properly */
