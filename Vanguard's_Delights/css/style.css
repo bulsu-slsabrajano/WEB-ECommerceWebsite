@@ -314,6 +314,7 @@ header a,
     margin-top: 5px;
     margin-bottom: 25px;
 }
+<<<<<<< HEAD
 /* Global Reset */
 * {
     margin: 0;
@@ -493,4 +494,158 @@ body {
 section, main, footer {
     display: block;
     width: 100%;
+=======
+
+/* Color Palette */
+:root {
+    --brand-maroon: #7a2a2a;      /* Darker for Nav/Footer */
+    --card-maroon: #a34949;       /* Lighter for Product Cards */
+    --bg-cream: #f8f4f0;          /* Soft background */
+}
+
+body {
+    background-color: var(--bg-cream);
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Hero Collage */
+.hero-collage {
+    height: 400px;
+    background-image: url('hero-collage.jpg'); /* Replace with your image path */
+    background-size: cover;
+    background-position: center;
+    border-bottom: 5px solid var(--brand-maroon);
+}
+
+/* Product Cards */
+.product-card {
+    transition: transform 0.2s;
+    border: none !important;
+    border-radius: 15px !important;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-img-container {
+    background: white;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 180px;
+}
+
+.product-img-container img {
+    max-height: 120px;
+    object-fit: contain;
+}
+
+.card-body-maroon {
+    background-color: var(--card-maroon);
+    color: white;
+    padding: 1rem;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.product-title {
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.product-desc {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.product-price {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Color Palette */
+:root {
+    --main-maroon: #7a2a2a;      /* The dark maroon from your images */
+    --accent-cream: #f9f5f0;     /* The light background color */
+    --white: #ffffff;
+}
+
+/* Header Background */
+.brand-header {
+    background-color: var(--main-maroon);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Brand Typography */
+.brand-logo {
+    width: 45px;
+    height: auto;
+}
+
+.brand-text-container {
+    display: flex;
+    flex-direction: column;
+    color: var(--white);
+    line-height: 1;
+}
+
+.brand-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-family: 'Georgia', serif; /* Matching the serif font in your image */
+}
+
+.brand-subtitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-family: 'Georgia', serif;
+}
+
+/* Search Bar Design */
+.search-wrapper {
+    position: relative;
+    background: var(--white);
+    border-radius: 8px;
+    padding: 2px 10px;
+    width: 250px;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    padding: 5px 5px 5px 25px;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+.search-icon {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ccc;
+}
+
+/* Header Icons */
+.header-icon-link {
+    color: var(--white);
+    font-size: 1.4rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.header-icon-link:hover {
+    opacity: 0.8;
+    color: var(--white);
+}
+
+/* General Layout Adjustment */
+body {
+    background-color: var(--accent-cream);
+>>>>>>> 76a6dd32248310554e1bed5e21218a30700b3145
 }

@@ -15,6 +15,7 @@
 </head>
 <body>
 
+<?php include 'header.php'; ?>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="index.html">Vanguard's Delights</a>
