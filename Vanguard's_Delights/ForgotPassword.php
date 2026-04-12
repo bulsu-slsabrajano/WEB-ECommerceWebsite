@@ -9,6 +9,7 @@
 </head>
 <body>
 
+<?php include 'header.php'; ?>
     <main class="login-wrapper">
         <div class="row g-0 vh-100">
             <div class="col-md-5 brand-bg d-flex align-items-center justify-content-center">
