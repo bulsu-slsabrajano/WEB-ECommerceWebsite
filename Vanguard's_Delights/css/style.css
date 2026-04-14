@@ -314,7 +314,7 @@ header a,
     margin-top: 5px;
     margin-bottom: 25px;
 }
-<<<<<<< HEAD
+
 /* Global Reset */
 * {
     margin: 0;
@@ -494,7 +494,7 @@ body {
 section, main, footer {
     display: block;
     width: 100%;
-=======
+
 
 /* Color Palette */
 :root {
@@ -647,5 +647,391 @@ body {
 /* General Layout Adjustment */
 body {
     background-color: var(--accent-cream);
->>>>>>> 76a6dd32248310554e1bed5e21218a30700b3145
 }
+}
+
+/* Footer Design  */
+/* css/style.css */
+
+.main-footer {
+    background-color: #262626;
+    color: #ffffff;
+    padding: 60px 40px 30px 40px;
+    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 180px;
+    margin-bottom: 30px;
+}
+
+/* Section Headings */
+.footer-section h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Navigation Links */
+.footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-list li {
+    margin-bottom: 15px;
+}
+
+.footer-list a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+    opacity: 0.85; /* Slightly faded like the image */
+    transition: opacity 0.2s;
+}
+
+.footer-list a:hover {
+    opacity: 1;
+}
+
+/* Business Info Spacing */
+.info-block {
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+.info-label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #ffffff;
+}
+
+.info-value {
+    display: block;
+    opacity: 0.85;
+    line-height: 1.4;
+}
+
+/* Social Media Icons */
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons a {
+    color: #ffffff;
+    font-size: 28px;
+    text-decoration: none;
+}
+
+/* Bottom Copyright Section */
+.footer-divider {
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 30px auto 20px auto;
+    max-width: 1200px;
+}
+
+.footer-bottom {
+    text-align: center;
+}
+
+.footer-bottom p {
+    color: #ffffff !important;
+    font-size: 14px;
+    opacity: 0.9 !important;
+    margin: 0;
+}
+
+/* Login Specifics */
+/* Login Page Specific Styles */
+.login-body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff;
+}
+
+.login-split-container {
+    display: flex;
+    min-height: 80vh; /* Leaves room for the footer */
+}
+
+/* Left Section */
+.login-left {
+    flex: 1;
+    background-color: #7A2626; /* Maroon background from your design */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-wrapper img {
+    max-width: 300px;
+    height: auto;
+}
+
+/* Right Section */
+.login-right {
+    flex: 1.5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.login-form-box {
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+}
+
+.login-title {
+    color: #7A2626;
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 30px;
+}
+
+.field-container {
+    margin-bottom: 15px;
+}
+
+.field-container input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #7A2626;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+}
+
+.forgot-link {
+    text-align: right;
+    margin-bottom: 25px;
+}
+
+.forgot-link a {
+    font-size: 12px;
+    color: #333;
+    text-decoration: none;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: #7A2626;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.divider {
+    height: 1px;
+    background-color: #ddd;
+    margin: 30px 0 20px 0;
+}
+
+.signup-text {
+    font-size: 14px;
+    color: #333;
+}
+
+.signup-text a {
+    color: #7A2626;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* Error handlings in login form */
+.error-message {
+    background-color: #ffe0e0;
+    color: #cc0000;
+    border: 1px solid #cc0000;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Header design */
+/* header Styles */
+.main-header {
+    background-color: #7A2626; /* Maroon branding */
+    padding: 10px 5%; /* Mas manipis na padding para sa modern look */
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 100%;
+    position: sticky; /* Mananatili sa taas habang nag-sscroll */
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-logo {
+    height: 50px; /* Standard size para sa header logo */
+    width: auto;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-top {
+    font-family: 'Times New Roman', serif;
+    font-size: 22px; /* Inadjust para hindi masyadong malaki */
+    line-height: 1;
+}
+
+.brand-bottom {
+    font-family: 'Times New Roman', serif;
+    font-size: 28px; /* Mas malaking font para sa 'Delights' */
+    font-weight: 700;
+    line-height: 0.9;
+}
+
+/* Action Section Wrapper (Para sa Search at Icons) */
+.action-section {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* Search Bar Styles */
+.search-bar {
+    background: #ffffff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 6px 15px;
+    width: 250px; /* Lapad base sa iyong reference */
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    padding-left: 10px;
+    width: 100%;
+    font-size: 14px;
+    color: #333;
+}
+
+.search-bar i {
+    color: #888;
+}
+
+/* Icon Styles */
+.header-icons {
+    display: flex;
+    gap: 20px;
+}
+
+.icon-btn {
+    color: #ffffff; /* Puting icons gaya ng nasa login/homepage */
+    font-size: 22px;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.icon-btn:hover {
+    color: #F5E6CC; /* Creamy color on hover para sa visual feedback */
+    transform: scale(1.1);
+}
+/* Styling para sa mga bagong image icons */
+.header-icon-img {
+    height: 24px; /* Parehong sukat ng dating icons */
+    width: auto;
+    display: block;
+    transition: transform 0.3s;
+}
+
+.search-icon-img {
+    height: 18px; /* Mas maliit para sa loob ng search bar */
+    width: auto;
+    margin-right: 8px;
+}
+
+/* Hover effect para sa image icons */
+.icon-btn:hover .header-icon-img {
+    transform: scale(1.1);
+}
+
+/* Siguraduhin na ang container ay naka-align */
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+
+/* Custom Maroon Button */
+.btn-maroon {
+    background-color: #7A2626; /* Maroon color mula sa iyong logo */
+    color: #ffffff;
+    border: 1px solid #7A2626;
+    padding: 8px 25px;
+    transition: all 0.3s ease;
+}
+
+.btn-maroon:hover {
+    background-color: #5a1c1c; /* Mas madilim na maroon para sa hover effect */
+    color: #ffffff;
+}
+
+/* Outline Maroon Button */
+.btn-outline-maroon {
+    background-color: transparent;
+    color: #7A2626;
+    border: 1px solid #7A2626;
+    padding: 8px 25px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-maroon:hover {
+    background-color: #7A2626;
+    color: #ffffff;
+}
+

@@ -1,55 +1,80 @@
+<?php
+$error = '';
+$allowed_errors = ['emptyfields', 'invalid', 'inactive', 'unauthorized'];
+
+// Redirect to clean URL if already logged in
+session_start();
+if (isset($_SESSION['role'])) {
+    if ($_SESSION['role'] === 'admin') {
+        header("Location: admin/dashboard.php");
+    } else {
+        header("Location: home.php");
+    }
+    exit();
+}
+
+if (isset($_GET['error']) && in_array($_GET['error'], $allowed_errors)) {
+    switch ($_GET['error']) {
+        case 'emptyfields':  $error = 'Please fill in all fields.'; break;
+        case 'invalid':      $error = 'Incorrect username or password.'; break;
+        case 'inactive':     $error = 'Your account is inactive. Please contact support.'; break;
+        case 'unauthorized': $error = 'You do not have permission to access this system.'; break;
+    }
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Vanguard's Delights</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Log In | Vanguard's Delights</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="login-body">
 
-<?php include 'header.php'; ?>
-    <main class="login-wrapper">
-        <div class="row g-0 vh-100">
-            <div class="col-md-5 brand-bg d-flex align-items-center justify-content-center">
-                <div class="logo-box text-center">
-                    <img src="logo.png" alt="Vanguard's Delights Logo" class="img-fluid" style="max-width: 80%;">
-                </div>
-            </div>
-
-            <div class="col-md-7 d-flex align-items-center justify-content-center bg-white">
-                <div class="login-container px-4" style="max-width: 400px; width: 100%;">
-                    <h2 class="login-title text-center mb-4 fw-bold" style="color: #7a2a2a;">LOG IN</h2>
-                    
-                    <form action="home.php" method="POST">
-                        <div class="mb-3">
-                            <input type="text" class="form-control" name="username" placeholder="Username" required>
-                        </div>
-                        <div class="mb-2">
-                            <input type="password" class="form-control" name="password" placeholder="Password" required>
-                        </div>
-                        
-                        <div class="text-end mb-4">
-                            <a href="ForgotPassword.php" class="text-decoration-none small" style="color: #7a2a2a;">Forgot Password?</a>
-                        </div>
-
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-login w-100 py-2 text-white" style="background-color: #7a2a2a; border: none;">Log in</button>
-                        </div>
-                    </form>
-
-                    <div class="text-center mt-4">
-                        <p class="signup-text small">
-                            Don't Have an Account? <a href="signup.php" class="text-decoration-none fw-bold" style="color: #7a2a2a;">Sign up</a>
-                        </p>
-                    </div>
-                </div>
+    <div class="login-split-container">
+        <div class="login-left">
+            <div class="logo-wrapper">
+                <img src="images/logoVanguards.png" alt="Vanguard's Delights Logo">
             </div>
         </div>
-    </main>
 
-    <?php include 'footer.php'; ?>
+        <div class="login-right">
+            <div class="login-form-box">
+                <h1 class="login-title">LOG IN</h1>
+
+                <?php if ($error): ?>
+                    <div class="error-message"><?= htmlspecialchars($error) ?></div>
+                <?php endif; ?>
+                
+                <form action="db/action/toLogin.php" method="POST">
+                    <div class="field-container">
+                        <input type="text" name="username" placeholder="Username" required>
+                    </div>
+                    
+                    <div class="field-container">
+                        <input type="password" name="password" placeholder="Password" required>
+                    </div>
+                    
+                    <div class="forgot-link">
+                        <a href="ForgotPassword.php">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit" name="login_btn" class="btn-login">Log In</button>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="signup-text">
+                        Don't Have an Account? <a href="signup.php">Sign up</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <?php include('footer.php'); ?>
 
 </body>
 </html>

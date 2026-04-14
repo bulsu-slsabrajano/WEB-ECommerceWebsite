@@ -10,7 +10,7 @@
 </head>
 <body class="bg-light">
     <?php include 'header.php'; ?>
-    <?php include 'navbar.php'; ?>
+  
 
     <main class="container my-5">
         <h2 class="fw-bold mb-4" style="color: #7a2a2a;">Profile</h2>

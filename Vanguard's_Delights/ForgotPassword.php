@@ -1,52 +1,63 @@
+<?php
+session_start();
+$error = isset($_GET['error']) ? $_GET['error'] : '';
+$success = isset($_GET['success']) ? $_GET['success'] : '';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password - Vanguard's Delights</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Forgot Password | Vanguard's Delights</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="login-body">
 
-<?php include 'header.php'; ?>
-    <main class="login-wrapper">
-        <div class="row g-0 vh-100">
-            <div class="col-md-5 brand-bg d-flex align-items-center justify-content-center">
-                <div class="logo-box text-center">
-                    <img src="logo.png" alt="Vanguard's Delights Logo" class="img-fluid" style="max-width: 80%;">
-                </div>
-            </div>
-
-            <div class="col-md-7 d-flex align-items-center justify-content-center bg-white">
-                <div class="login-container px-4" style="max-width: 400px; width: 100%;">
-                    <h2 class="login-title text-center mb-4 fw-bold" style="color: #7a2a2a;">FORGOT PASSWORD</h2>
-                    
-                    <form action="reset_process.php" method="POST">
-                        <div class="mb-3">
-                            <input type="text" class="form-control" name="username" placeholder="Username" required>
-                        </div>
-                        <div class="mb-3">
-                            <input type="password" class="form-control" name="new_password" placeholder="New Password" required>
-                        </div>
-                        <div class="mb-4">
-                            <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required>
-                        </div>
-                        
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-login w-100 py-2 text-white" style="background-color: #7a2a2a;">Submit</button>
-                        </div>
-
-                        <div class="text-center mt-3">
-                            <small class="text-muted">Remember your password? <a href="login.php" class="text-decoration-none" style="color: #7a2a2a;">Log In</a></small>
-                        </div>
-                    </form>
-                </div>
+    <div class="login-split-container">
+        <div class="login-left">
+            <div class="logo-wrapper">
+                <img src="images/logoVanguards.png" alt="Vanguard's Delights Logo">
             </div>
         </div>
-    </main>
 
-    <?php include 'footer.php'; ?>
+        <div class="login-right">
+            <div class="login-form-box">
+                <h1 class="login-title">FORGOT PASSWORD</h1>
+
+                <?php if ($error == 'not_found'): ?>
+                    <p class="error-message" style="color: red; text-align: center;">Username not found.</p>
+                <?php elseif ($error == 'mismatch'): ?>
+                    <p class="error-message" style="color: red; text-align: center;">Passwords do not match.</p>
+                <?php elseif ($success == 'changed'): ?>
+                    <p class="success-message" style="color: green; text-align: center;">Password updated successfully!</p>
+                <?php endif; ?>
+
+                <form action="db/action/toForgotPass.php" method="POST">
+                    <div class="field-container">
+                        <input type="text" name="username" placeholder="Username" required>
+                    </div>
+                    
+                    <div class="field-container">
+                        <input type="password" name="new_password" placeholder="New Password" required>
+                    </div>
+
+                    <div class="field-container">
+                        <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                    </div>
+                    
+                    <button type="submit" name="reset_btn" class="btn-login">Save</button>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="signup-text">
+                        Remember your password? <a href="login.php">Log In</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <?php include('footer.php'); ?>
 
 </body>
 </html>

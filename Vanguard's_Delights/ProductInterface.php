@@ -10,7 +10,7 @@
 </head>
 <body class="bg-light">
     <?php include 'header.php'; ?>
-    <?php include 'navbar.php'; ?>
+ 
 
     <main class="container my-4">
         <nav aria-label="breadcrumb">

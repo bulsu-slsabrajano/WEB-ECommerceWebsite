@@ -1,42 +1,56 @@
- <footer class="footer-main">
-        <div class="container">
-            <div class="row footer-top">
-                <div class="col-md-3">
-                    <h6>QUICK LINKS</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Cart</a></li>
-                        <li><a href="#">My Purchases</a></li>
-                        <li><a href="#">Profile</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h6>COMPANY</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Products and Services</a></li>
-                        <li><a href="#">Terms and Use</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h6>BUSINESS INFORMATION</h6>
-                    <p><strong>Address</strong><br>Pinaod, San Ildefonso Bulacan</p>
-                    <p><strong>Email</strong><br>vanguarddelights@gmail.com</p>
-                    <p><strong>Telephone</strong><br>0932 125 3383</p>
-                </div>
-                <div class="col-md-3 text-md-end">
-                    <h6>FOLLOW US ON</h6>
-                    <div class="social-icons">
-                        <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="24" alt="FB">
-                        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="24" alt="IG" class="ms-2">
-                    </div>
-                </div>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<footer class="main-footer">
+    <div class="footer-container">
+        
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul class="footer-list">
+                <li><a href="index.php">Home</a></li>
+                <li><a href="cart.php">Cart</a></li>
+                <li><a href="purchases.php">My Purchases</a></li>
+                <li><a href="profile.php">Profile</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Company</h4>
+            <ul class="footer-list">
+                <li><a href="about.php">About Us</a></li>
+                <li><a href="services.php">Products and Services</a></li>
+                <li><a href="terms.php">Terms and Use</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section" style="flex: 1.5;">
+            <h4>Business Information</h4>
+            <div class="info-block">
+                <span class="info-label">Address</span>
+                <span class="info-value">Pinaod, San Ildefonso Bulacan</span>
             </div>
-            <div class="footer-bottom text-center">
-                <hr>
-                <p>&copy; 2026 Vanguard's Delights. All Rights Reserved.</p>
+            <div class="info-block">
+                <span class="info-label">Email</span>
+                <span class="info-value">vanguarddelights@gmail.com</span>
+            </div>
+            <div class="info-block">
+                <span class="info-label">Telephone</span>
+                <span class="info-value">0932 125 3363</span>
             </div>
         </div>
-    </footer>
-</body>
-</html>
+
+        <div class="footer-section">
+            <h4>Follow Us On</h4>
+            <div class="social-icons">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <hr class="footer-divider">
+
+    <div class="footer-bottom">
+        <p>&copy; <?php echo date("Y"); ?> Vanguard's Delights. All Rights Reserved.</p>
+    </div>
+</footer>
