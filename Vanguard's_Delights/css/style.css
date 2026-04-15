@@ -170,83 +170,6 @@ header a,
     background-color: #e3dec9;
 }
 
-/* ========================================= */
-/* 6. FOOTER                                 */
-/* ========================================= */
-
-.footer-main {
-    background-color: var(--dark-grey);
-    color: white;
-    padding: 40px 0 20px;
-    font-size: 14px;
-}
-
-.footer-top h6 {
-    color: #fff;
-    font-size: 13px;
-    margin-bottom: 20px;
-    letter-spacing: 1px;
-    font-weight: bold;
-}
-
-.footer-top a {
-    color: var(--text-grey);
-    text-decoration: none;
-}
-
-.footer-top a:hover {
-    color: white;
-}
-
-/*dinagdag*/
-/* Ensure the trash icon matches the slim black look in your pic */
-.fa-trash-alt {
-    font-size: 1.2rem;
-    color: #212529 !important;
-}
-
-/* Matching the specific font weight for subtotal */
-#cart-subtotal {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #212529;
-}
-
-/* Extra padding for the product section to match your image */
-.product-img {
-    width: 100px;
-    height: auto;
-    object-fit: contain;
-    margin-left: 25px; /* Space between checkbox and image */
-}
-
-/* Styling the Icons */
-.qty-controls i {
-    font-size: 1.25rem;
-    color: #333;
-    transition: color 0.2s;
-}
-
-.qty-controls i:hover {
-    color: #8B3232; /* Maroon on hover */
-}
-
-.fa-trash-alt {
-    font-size: 1.2rem;
-    color: #333;
-}
-
-.fa-trash-alt:hover {
-    color: #dc3545; /* Red on hover */
-}
-
-/* Ensure images don't break if path is wrong */
-.product-img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    background-color: #f8f9fa; /* Light gray box if image is missing */
-}
 
 /* 1. Updated "Your Cart" Title */
 .cart-title {
@@ -651,109 +574,143 @@ body {
 }
 
 /* Footer Design  */
-/* css/style.css */
-
-.main-footer {
+.vd-footer {
     background-color: #262626;
     color: #ffffff;
     padding: 60px 40px 30px 40px;
-    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
-
-.footer-container {
+ 
+.vd-footer-container {
     display: flex;
     justify-content: space-between;
     max-width: 1200px;
     margin: 0 auto;
     flex-wrap: wrap;
+    gap: 20px;
 }
-
-.footer-section {
+ 
+.vd-footer-section {
     flex: 1;
-    min-width: 180px;
+    min-width: 160px;
     margin-bottom: 30px;
 }
-
+ 
+.vd-footer-section--wide {
+    flex: 1.5;
+}
+ 
 /* Section Headings */
-.footer-section h4 {
-    font-size: 16px;
+.vd-footer-heading {
+    font-size: 17px;
     font-weight: 700;
     margin-bottom: 25px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    color: #ffffff;
 }
-
+ 
 /* Navigation Links */
-.footer-list {
+.vd-footer-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
-.footer-list li {
+ 
+.vd-footer-list li {
     margin-bottom: 15px;
 }
-
-.footer-list a {
+ 
+.vd-footer-list a {
     color: #ffffff;
     text-decoration: none;
-    font-size: 15px;
-    opacity: 0.85; /* Slightly faded like the image */
+    font-size: 17px;
+    opacity: 0.85;
     transition: opacity 0.2s;
 }
-
-.footer-list a:hover {
+ 
+.vd-footer-list a:hover {
     opacity: 1;
 }
-
-/* Business Info Spacing */
-.info-block {
-    margin-bottom: 20px;
-    font-size: 15px;
+ 
+/* Business Info */
+.vd-info-block {
+    margin-bottom: 18px;
+    font-size: 16px;
 }
-
-.info-label {
+ 
+.vd-info-label {
     display: block;
     font-weight: 700;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     color: #ffffff;
 }
-
-.info-value {
+ 
+.vd-info-value {
     display: block;
     opacity: 0.85;
     line-height: 1.4;
 }
-
-/* Social Media Icons */
-.social-icons {
+ 
+/* Social Icons - Uses inline SVG, no Font Awesome needed */
+.vd-social-icons {
     display: flex;
     gap: 15px;
+    align-items: center;
+    margin-top: 5px;
 }
-
-.social-icons a {
-    color: #ffffff;
-    font-size: 28px;
+ 
+.vd-social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
     text-decoration: none;
 }
-
-/* Bottom Copyright Section */
-.footer-divider {
+ 
+.vd-social-link:hover {
+    border-color: #D4A96A;
+    background-color: rgba(212, 169, 106, 0.15);
+    transform: scale(1.1);
+}
+ 
+.vd-social-link svg {
+    display: block;
+}
+ 
+/* Divider */
+.vd-footer-divider {
     border: 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin: 30px auto 20px auto;
     max-width: 1200px;
 }
-
-.footer-bottom {
+ 
+/* Bottom Copyright */
+.vd-footer-bottom {
     text-align: center;
 }
-
-.footer-bottom p {
+ 
+.vd-footer-bottom p {
     color: #ffffff !important;
-    font-size: 14px;
-    opacity: 0.9 !important;
+    font-size: 16px;
+    opacity: 1 !important;
     margin: 0;
+}
+ 
+/* Responsive */
+@media (max-width: 768px) {
+    .vd-footer-container {
+        flex-direction: column;
+    }
+ 
+    .vd-footer {
+        padding: 40px 20px 20px 20px;
+    }
 }
 
 /* Login Specifics */
@@ -872,166 +829,158 @@ body {
 }
 
 /* Header design */
-/* header Styles */
-.main-header {
-    background-color: #7A2626; /* Maroon branding */
-    padding: 10px 5%; /* Mas manipis na padding para sa modern look */
-    color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    width: 100%;
-    position: sticky; /* Mananatili sa taas habang nag-sscroll */
+/* css/style.css */
+
+:root {
+    --vd-maroon:      #7A1F1F;
+    --vd-maroon-dark: #5E1616;
+    --vd-cream:       #F5EFE6;
+    --vd-gold:        #D4A96A;
+    --vd-gold-light:  #E8C99A;
+}
+
+.vd-header {
+    background-color: var(--vd-maroon);
+    padding: 0 40px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
     top: 0;
     z-index: 1000;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
 }
 
-.header-container {
+/* Brand / Logo */
+.vd-brand {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.logo-link {
+    gap: 14px;
     text-decoration: none;
-    color: inherit;
-}
-
-.logo-section {
-    display: flex;
-    align-items: center;
-    gap: 12px;
 }
 
 .header-logo {
-    height: 50px; /* Standard size para sa header logo */
+    height: 50px;
     width: auto;
 }
 
-.brand-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.brand-top {
-    font-family: 'Times New Roman', serif;
-    font-size: 22px; /* Inadjust para hindi masyadong malaki */
-    line-height: 1;
-}
-
-.brand-bottom {
-    font-family: 'Times New Roman', serif;
-    font-size: 28px; /* Mas malaking font para sa 'Delights' */
-    font-weight: 700;
-    line-height: 0.9;
-}
-
-/* Action Section Wrapper (Para sa Search at Icons) */
-.action-section {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-/* Search Bar Styles */
-.search-bar {
-    background: #ffffff;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    padding: 6px 15px;
-    width: 250px; /* Lapad base sa iyong reference */
-}
-
-.search-bar input {
-    border: none;
-    outline: none;
-    padding-left: 10px;
-    width: 100%;
-    font-size: 14px;
-    color: #333;
-}
-
-.search-bar i {
-    color: #888;
-}
-
-/* Icon Styles */
-.header-icons {
-    display: flex;
-    gap: 20px;
-}
-
-.icon-btn {
-    color: #ffffff; /* Puting icons gaya ng nasa login/homepage */
+.vd-brand-name {
+    font-family: 'Playfair Display', serif;
     font-size: 22px;
-    transition: 0.3s;
-    text-decoration: none;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.1;
 }
 
-.icon-btn:hover {
-    color: #F5E6CC; /* Creamy color on hover para sa visual feedback */
-    transform: scale(1.1);
+/* Search Bar */
+.vd-search-form {
+    flex: 0 1 320px;
+    margin: 0 24px;
 }
-/* Styling para sa mga bagong image icons */
-.header-icon-img {
-    height: 24px; /* Parehong sukat ng dating icons */
-    width: auto;
-    display: block;
-    transition: transform 0.3s;
+
+.vd-search-wrap {
+    position: relative;
+    background: white;
+    border-radius: 22px;
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
 }
 
 .search-icon-img {
-    height: 18px; /* Mas maliit para sa loob ng search bar */
-    width: auto;
-    margin-right: 8px;
+    height: 18px;
+    margin-right: 10px;
 }
 
-/* Hover effect para sa image icons */
-.icon-btn:hover .header-icon-img {
+.vd-search-input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+}
+
+/* Action Icons */
+.vd-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-icon-img {
+    height: 26px;
+    width: auto;
+    transition: transform 0.2s;
+}
+
+.header-icon-img:hover {
     transform: scale(1.1);
 }
 
-/* Siguraduhin na ang container ay naka-align */
-.header-icons {
+.vd-action-btn { 
+    position: relative; 
+    text-decoration: none; 
+}
+
+.vd-cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background: var(--vd-gold);
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 50%;
+    border: 2px solid var(--vd-maroon);
+}
+
+.vd-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    display: none;
+    min-width: 150px;
+    padding: 10px 0;
+}
+
+.vd-dropdown-menu.open { 
+    display: block; 
+}
+
+.vd-dropdown-item { 
+    display: block; 
+    padding: 8px 15px; 
+    color: #333; 
+    text-decoration: none; 
+    font-size: 14px; 
+}
+
+.vd-dropdown-item:hover { 
+    background: #f8f9fa; 
+}
+/* This groups the search and icons together and pushes them to the right */
+.vd-nav-group {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 20px; /* Space between search bar and icons */
+    flex: 1;
+    justify-content: flex-end; /* This pushes the whole group to the right */
 }
 
-.search-bar {
+/* Adjust the search form so it doesn't take up too much space */
+.vd-search-form {
+    flex: 0 1 250px; /* Reduced width to look better next to icons */
+    margin: 0; /* Remove the old side margins */
+}
+
+/* Ensure the header still spaces the logo and this new group correctly */
+.vd-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    background: #ffffff;
-    border-radius: 6px;
-    padding: 6px 12px;
-}
-
-/* Custom Maroon Button */
-.btn-maroon {
-    background-color: #7A2626; /* Maroon color mula sa iyong logo */
-    color: #ffffff;
-    border: 1px solid #7A2626;
-    padding: 8px 25px;
-    transition: all 0.3s ease;
-}
-
-.btn-maroon:hover {
-    background-color: #5a1c1c; /* Mas madilim na maroon para sa hover effect */
-    color: #ffffff;
-}
-
-/* Outline Maroon Button */
-.btn-outline-maroon {
-    background-color: transparent;
-    color: #7A2626;
-    border: 1px solid #7A2626;
-    padding: 8px 25px;
-    transition: all 0.3s ease;
-}
-
-.btn-outline-maroon:hover {
-    background-color: #7A2626;
-    color: #ffffff;
+    /* ... keep your existing padding and background ... */
 }
 

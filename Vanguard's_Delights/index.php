@@ -12,9 +12,6 @@ session_start();
 </head>
 <body>
 
-<?php 
-include('header.php'); 
-?>
 
     <header class="hero-section text-center py-5">
         <div class="container">
