@@ -984,3 +984,361 @@ body {
     /* ... keep your existing padding and background ... */
 }
 
+/* venceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee - about */
+/* ============================================================
+   1. GLOBAL & RESET
+   ============================================================ */
+* {
+    font-family: 'Poppins', sans-serif !important;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* ============================================================
+   2. HERO SECTION (With Carousel Support)
+   ============================================================ */
+.about-hero-section {
+    height: 502px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-color: #7e2a2a; /* Fallback color */
+}
+
+/* Carousel Animation */
+.carousel-item {
+    transition: transform 1.2s ease-in-out, opacity 1.2s ease-in-out;
+}
+
+/* Breadcrumbs inside Hero */
+.breadcrumb-link {
+    text-decoration: none;
+    transition: 0.3s ease;
+    font-weight: 400;
+}
+
+.breadcrumb-link:hover {
+    color: #d4ac0d !important;
+    text-decoration: underline;
+}
+
+.breadcrumb-current {
+    opacity: 0.8;
+    font-weight: 500;
+}
+
+/* Hero Text Content */
+.hero-title {
+    font-weight: 800;
+    font-size: 4rem;
+    line-height: 1.1;
+    margin: 0;
+    color: #ffffff;
+}
+
+.hero-title.spacing {
+    margin-bottom: 15px;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+    max-width: 500px;
+    font-style: italic;
+    
+    /* GINAWANG WHITE AT TINANGGAL ANG OPACITY */
+    color: #ffffff !important; 
+    opacity: 1 !important; 
+}
+
+
+/* Explore Button */
+.hero-explore-btn {
+    position: absolute;
+    bottom: 50px; 
+    right: 3%;
+    background-color: #d4ac0d;
+    color: #000000;
+    border: none;
+    padding: 15px 35px;
+    font-weight: 700;
+    border-radius: 8px;
+    transition: 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.hero-explore-btn:hover {
+    background-color: #b3920b;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* ============================================================
+   3. MAIN CONTENT (About Us Details)
+   ============================================================ */
+.section-title {
+    color: #7e2a2a;
+    font-weight: 800;
+    font-size: 2.5rem;
+}
+
+.custom-img-main {
+    width: 100%;
+    height: 342px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.section-desc {
+    color: #000000; /* Black text */
+    line-height: 1.8;
+    font-size: 1.05rem;
+    text-align: justify;
+}
+
+/* ============================================================
+   4. VISION & MISSION CARDS (Gaya ng 2nd Pic)
+   ============================================================ */
+.vision-mission-card {
+    background-color: #f8f5f0; /* Beige gaya ng pic */
+    padding: 60px 40px; /* Mas malaking padding */
+    border-radius: 12px;
+    border: 1px solid #e8e4db;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.card-headline {
+    color: #7e2a2a; /* Maroon */
+    font-weight: 800;
+    font-size: 2.2rem; /* Mas malaking font base sa pic */
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.card-body-text {
+    color: #000000;
+    font-size: 1.2rem; /* Mas malaking body text */
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* ============================================================
+   5. CORE VALUES LIST (WITH FIXED BORDER)
+   ============================================================ */
+.section-heading-maroon {
+    color: #7e2a2a;
+    font-weight: 800;
+    font-size: 3rem;
+    margin-top: 40px;
+}
+
+.value-item {
+    background-color: #fffef5;
+    border-radius: 15px;
+    padding: 1.8rem;
+    margin-bottom: 1.5rem;
+    
+    /* NANDITO ANG BORDER NA GUSTO MO */
+    border: 1px solid #e8e4db !important; 
+    
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.value-item:hover {
+    transform: translateX(10px);
+    border-color: #d4ac0d !important;
+    border-left: 6px solid #d4ac0d !important; /* Gold accent line */
+    background-color: #fdfaf0;
+}
+
+.value-title {
+    color: #7e2a2a;
+    font-weight: 800;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.value-desc {
+    color: #000000;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+
+/* ============================================================
+   6. RESPONSIVE (STABLE)
+   ============================================================ */
+@media (max-width: 992px) {
+    .hero-title { font-size: 3rem; }
+}
+
+@media (max-width: 768px) {
+    .about-hero-section { height: 450px; }
+    .hero-title { font-size: 2.2rem; }
+    
+    .hero-explore-btn {
+        position: relative;
+        bottom: 0;
+        right: 0;
+        margin: 20px auto;
+        display: block;
+        width: fit-content;
+    }
+    
+    .vision-mission-card { 
+        padding: 30px 20px; 
+        margin-bottom: 20px; /* Para hindi magdikit sa mobile */
+    }
+}
+
+
+/* terms */
+/* ============================================================
+   1. GLOBAL STYLES
+   ============================================================ */
+* {
+    /* Pinatupad ang Poppins sa lahat ng elements */
+    font-family: 'Poppins', sans-serif !important;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* ============================================================
+   2. BREADCRUMBS DESIGN
+   ============================================================ */
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.breadcrumb-link {
+    color: #7e2a2a; /* Maroon theme color */
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+    color: #d4ac0d; /* Gold hover color */
+    text-decoration: underline;
+}
+
+.breadcrumb-current {
+    color: #6c757d !important; /* Gray color for active page */
+    font-weight: 500;
+}
+
+/* ============================================================
+   3. TERMS PAGE HEADERS
+   ============================================================ */
+.terms-title {
+    color: #7e2a2a; /* Maroon color for the main page title */
+    font-weight: 800;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.effective-date {
+    color: #6c757d;
+    font-style: italic;
+    font-size: 0.95rem;
+}
+
+/* ============================================================
+   4. TERMS CONTENT BOX (The Main Container)
+   ============================================================ */
+.terms-content-box {
+    background-color: #fffef5; /* Light cream background */
+    padding: 50px;
+    border-radius: 15px;
+    border: 1px solid #f2eee0;
+    margin-bottom: 50px;
+}
+
+.terms-intro {
+    color: #000000; /* Black text */
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+/* Summary List (The numbered list at the top) */
+.terms-list-summary {
+    background: #fdfaf0;
+    padding: 25px 45px;
+    border-radius: 10px;
+    border-left: 5px solid #d4ac0d; /* Gold accent line */
+    margin-bottom: 40px;
+}
+
+.terms-list-summary li {
+    color: #000000; /* Black font */
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* ============================================================
+   5. SECTION HEADERS (1. Website Use, 2. Product Availability, etc.)
+   ============================================================ */
+.section-title-black {
+    color: #000000 !important; /* Force Black color */
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.terms-section {
+    margin-bottom: 35px;
+}
+
+.terms-text {
+    color: #000000; /* Black font */
+    line-height: 1.8;
+    font-size: 1rem;
+    text-align: justify;
+}
+
+/* ============================================================
+   6. RESPONSIVE FIXES
+   ============================================================ */
+@media (max-width: 768px) {
+    .terms-title {
+        font-size: 2.2rem;
+    }
+    
+    .terms-content-box {
+        padding: 25px;
+    }
+    
+    .terms-list-summary {
+        padding: 20px 30px;
+    }
+}
+
+
+
+
+
+
+

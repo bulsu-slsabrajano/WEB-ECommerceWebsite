@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,13 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
+<body class="products-services-page">
 
     <main class="container my-5">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="About_Us.php">Home</a></li>
-                <li class="breadcrumb-item active">Products and Services</li>
+                <li class="breadcrumb-item"><a href="index.php" class="breadcrumb-link">Home</a></li>
+                <li class="breadcrumb-item active breadcrumb-current">Products and Services</li>
             </ol>
         </nav>
 
@@ -50,7 +51,7 @@
                     <img src="../images/F1.png" class="custom-banner-img shadow-sm" alt="Services Banner">
                     
                     <div class="service-list-container mt-4">
-                        <h4 class="section-title text-start h5">Services include:</h4>
+                        <h4 class="section-title-small text-start">Services include:</h4>
                         <ul class="custom-list">
                             <li>Custom cake orders for birthdays and events</li>
                             <li>Dessert preparation for small celebrations</li>
@@ -69,5 +70,7 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
