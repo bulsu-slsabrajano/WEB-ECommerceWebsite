@@ -171,6 +171,86 @@ header a,
 }
 
 
+/* ========================================= */
+/* 6. FOOTER                                 */
+/* ========================================= */
+
+.footer-main {
+    background-color: var(--dark-grey);
+    color: white;
+    padding: 40px 0 20px;
+    font-size: 14px;
+}
+
+.footer-top h6 {
+    color: #fff;
+    font-size: 13px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.footer-top a {
+    color: var(--text-grey);
+    text-decoration: none;
+}
+
+.footer-top a:hover {
+    color: white;
+}
+
+
+
+/*ERINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN*/
+/*dinagdag*/
+/* Ensure the trash icon matches the slim black look in your pic */
+.fa-trash-alt {
+    font-size: 1.2rem;
+    color: #212529 !important;
+}
+
+/* Matching the specific font weight for subtotal */
+#cart-subtotal {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #212529;
+}
+
+/* Extra padding for the product section to match your image */
+.product-img {
+    width: 100px;
+    height: auto;
+    object-fit: contain;
+    margin-left: 25px; /* Space between checkbox and image */
+}
+
+/* Styling the Icons */
+.qty-controls i {
+    font-size: 1.25rem;
+    color: #333 !important;
+    transition: color 0.2s;
+}
+
+.qty-controls i:hover {
+    color: #8B3232 !important; /* Maroon on hover */
+}
+
+.fa-trash-alt {
+    color: #333 !important;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+
+/* Ensure images don't break if path is wrong */
+.product-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    background-color: #f8f9fa; /* Light gray box if image is missing */
+}
+
+
+
 /* 1. Updated "Your Cart" Title */
 .cart-title {
     /* Thick, heavy font weight and specific maroon color */
@@ -187,7 +267,7 @@ header a,
     padding-left: 90px !important; /* Adjust this number to align perfectly with your images */
 }
 /* Updated Checkout Button - Correct color and heavy look */
-.btn-maroon-lg {
+.checkout-button {
     background-color: #7A2E2E; /* Match the title color exactly */
     color: white;
     border: none;
@@ -205,7 +285,7 @@ header a,
     transition: background 0.2s;
 }
 
-.btn-maroon-lg:hover {
+.checkout-button:hover {
     background-color: #9f3636;
     color: #f8eded;
 }
@@ -236,6 +316,416 @@ header a,
     color: #555;
     margin-top: 5px;
     margin-bottom: 25px;
+}
+
+
+/*CHECKOUT PAGEEEEEEEEEEEEEEEEEEEEEE*/
+/* Address Card Styling */
+.address-card {
+    background-color: #F9F5F0; /* Cream background from reference */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.btn-outline-maroon {
+    border: 1px solid #7A2E2E;
+    color: #7A2E2E;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 5px 25px;
+    border-radius: 5px;
+}
+
+.btn-maroon-sm {
+    background-color: #8B3232;
+    color: white;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 5px 25px;
+    border-radius: 5px;
+}
+
+/* Specific Image for Checkout */
+.product-img-checkout {
+    width: 120px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Reusing the heavy font style for Total Payment */
+.fw-extrabold {
+    font-weight: 800 !important;
+}
+
+.checkout-footer {
+    max-width: 100%;
+    margin-bottom: 50px;
+}
+
+/* Place Order Button inherits from your btn-checkout style */
+/* It will automatically be blocky and maroon */
+
+/* TARGETING CHECKOUT IMAGE */
+/* Finds images with .product-img-checkout inside a row with .cart-row-checkout */
+
+body { font-family: 'Poppins', sans-serif; }
+
+.cart-title {
+    font-weight: 800;
+    color: #7A2E2E;
+    margin-bottom: 30px;
+}
+
+.cart-header {
+    background-color: #8B3232;
+    color: white;
+    font-weight: 700;
+    border-radius: 4px;
+}
+
+/* Rounded Square Image Container */
+.img-container-base {
+    width: 90px;
+    height: 90px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.btn-maroon-lg {
+    background-color: #8B3232;
+    color: white;
+    border: none;
+    padding: 12px 60px;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.btn-maroon-lg:hover { background-color: #632323; }
+
+.address-card {
+    background-color: #F9F5F0;
+    border-radius: 8px;
+}
+
+/* Fix for the blue text/white background when clicking */
+a.text-decoration-none:active, 
+a.text-decoration-none:focus {
+    color: white !important; /* Prevents text from turning blue */
+    outline: none;
+}
+
+.btn-maroon-lg:active, 
+.btn-maroon-lg:focus {
+    background-color: #632323 !important; /* Keep it maroon when clicked */
+    color: white !important;
+    box-shadow: none !important; /* Removes the Bootstrap blue glow */
+    border: none !important;
+}
+
+/* Address Card */
+.address-card {
+    background-color: #FAF6F2; /* Light cream/beige from design */
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Button Variants */
+.btn-maroon-sm {
+    background-color: #8B3232;
+    color: white !important;
+    border-radius: 5px;
+    padding: 5px 15px;
+}
+
+.btn-outline-maroon {
+    border: 1px solid #8B3232;
+    color: #8B3232;
+    border-radius: 5px;
+}
+
+/* Product Image Box */
+.img-container-base {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: transparent;
+}
+
+.product-img-checkout {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Overall Footer Style */
+.checkout-footer {
+    border-top: 1px solid #8B3232;
+}
+
+.fw-extrabold {
+    font-weight: 800 !important;
+}
+.img-container-base {
+    width: 80px;
+    height: 80px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.product-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+
+
+.cart-row {
+    border-bottom: 0.5px solid #712223 !important; /* Use your specific maroon hex code */
+}
+
+.checkout-footer {
+    border-top: 2px solid #7A2E2E; /* The dark red line above payment */
+    padding-top: 10px;
+}
+
+#checkout-total-val {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+
+/* Custom Sleek Dialog - Matched & Compact */
+.custom-sleek-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Dimmed background */
+    backdrop-filter: blur(4px); /* Blurred background for focus */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.custom-sleek-box {
+    background: white;
+    padding: 1.5rem; /* Reduced padding to make it smaller */
+    border-radius: 18px; /* Smooth rounded corners */
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    max-width: 320px; /* Reduced width for a compact look */
+    width: 85%;
+    animation: sleekIn 0.3s ease-out; /* Smooth entry animation */
+}
+
+@keyframes sleekIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.sleek-icon {
+    font-size: 3rem; /* Scaled down icon */
+    color: #7A2E2E; /* Signature Maroon */
+    margin-bottom: 1rem;
+}
+
+.sleek-title {
+    font-size: 1.15rem; /* Balanced title size */
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.sleek-message {
+    font-size: 0.9rem; /* Smaller message text */
+    color: #666;
+    margin-bottom: 1.25rem;
+    line-height: 1.4;
+}
+
+.sleek-btn {
+    background: #7A2E2E; /* Maroon button */
+    color: white;
+    border: none;
+
+    padding: 6px 45px;
+    border-radius: 8px; /* Fully rounded */
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sleek-btn:hover {
+    background: #5a2222;
+    transform: none;
+}
+
+
+/* Address Modal Styles */
+.custom-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dimmed background */
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* Force lock the size */
+#edit-address {
+    resize: none !important;
+    border: 1px solid #ced4da;
+}
+
+#edit-address:focus {
+    border-color: #7A2E2E;
+    box-shadow: 0 0 0 0.25rem rgba(122, 46, 46, 0.25);
+}
+
+
+.editAdress-apply-btn{
+    background-color: #7A2E2E;
+    color: white;
+    border: none;
+    padding: 3px 45px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s;
+}
+
+/* Ensure both buttons have the same dimensions */
+.btn-address-cancel, 
+.btn-address-apply {
+    padding: 6px 20px; /* Consistent vertical and horizontal padding */
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 8px;
+    min-width: 100px; /* Forces a minimum width so they match */
+}
+
+/* Cancel Button specific style */
+.btn-address-cancel {
+    background-color: transparent;
+    border: 1px solid #7A2E2E;
+    color: #7A2E2E;
+}
+
+.btn-address-cancel:hover {
+    background-color: #c5c5c5;
+}
+
+/* Apply Button specific style */
+.btn-address-apply {
+    background-color: #7A2E2E;
+    border: 1px solid #7A2E2E;
+    color: white;
+}
+
+.btn-address-apply:hover {
+    background-color: #5a2121;
+    color: white;
+}
+
+/* --- Modal Styles --- */
+.custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content-custom {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 20px;
+    width: 95%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* This ensures the buttons are rectangular and match your reference */
+
+
+/* Base Button Styling */
+.sleek-btn {
+    /* Shape & Size */
+    width: auto !important;
+    height: auto !important;
+    padding: 10px 25px !important;
+    min-width: 130px;
+    border-radius: 8px !important;
+    
+    /* Text Alignment */
+    white-space: nowrap !important; /* Forces text into one line */
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Effects */
+    border: none;
+    cursor: pointer;
+    /* transition: all 0.2s ease; Smooth transition for the hover */
+}
+
+/* Hover Effect: Just makes the current color 10% darker */
+.sleek-btn:hover {
+    filter: brightness(0.8);
+    /* transform: translateY(-1px); Optional: slight lift effect */
+    transform: none;
+}
+
+/* Specific Colors */
+.sleek-btn-primary {
+    background-color: #7A2E2E !important;
+    color: white !important;
+}
+
+.sleek-btn-cancel {
+    background-color: #6c757d !important;
+    color: white !important;
 }
 
 /* Global Reset */
@@ -984,6 +1474,19 @@ body {
     /* ... keep your existing padding and background ... */
 }
 
+/*ERIN ADD FOR ICONS*/
+/* Add this to your style.css */
+.fas, .fa-solid, .fa-regular, .fa-brands, .fa {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900; /* Required for 'fas' (solid) icons to display */
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+
 /* venceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee - about */
 /* ============================================================
    1. GLOBAL & RESET
@@ -1205,3 +1708,158 @@ body {
     }
 }
 
+<<<<<<< HEAD
+=======
+
+/* terms */
+/* ============================================================
+   1. GLOBAL STYLES
+   ============================================================ */
+* {
+    /* Pinatupad ang Poppins sa lahat ng elements */
+    font-family: 'Poppins', sans-serif !important;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* ============================================================
+   2. BREADCRUMBS DESIGN
+   ============================================================ */
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.breadcrumb-link {
+    color: #7e2a2a; /* Maroon theme color */
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+    color: #d4ac0d; /* Gold hover color */
+    text-decoration: underline;
+}
+
+.breadcrumb-current {
+    color: #6c757d !important; /* Gray color for active page */
+    font-weight: 500;
+}
+
+/* ============================================================
+   3. TERMS PAGE HEADERS
+   ============================================================ */
+.terms-title {
+    color: #7e2a2a; /* Maroon color for the main page title */
+    font-weight: 800;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.effective-date {
+    color: #6c757d;
+    font-style: italic;
+    font-size: 0.95rem;
+}
+
+/* ============================================================
+   4. TERMS CONTENT BOX (The Main Container)
+   ============================================================ */
+.terms-content-box {
+    background-color: #fffef5; /* Light cream background */
+    padding: 50px;
+    border-radius: 15px;
+    border: 1px solid #f2eee0;
+    margin-bottom: 50px;
+}
+
+.terms-intro {
+    color: #000000; /* Black text */
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+/* Summary List (The numbered list at the top) */
+.terms-list-summary {
+    background: #fdfaf0;
+    padding: 25px 45px;
+    border-radius: 10px;
+    border-left: 5px solid #d4ac0d; /* Gold accent line */
+    margin-bottom: 40px;
+}
+
+.terms-list-summary li {
+    color: #000000; /* Black font */
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* ============================================================
+   5. SECTION HEADERS (1. Website Use, 2. Product Availability, etc.)
+   ============================================================ */
+.section-title-black {
+    color: #000000 !important; /* Force Black color */
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.terms-section {
+    margin-bottom: 35px;
+}
+
+.terms-text {
+    color: #000000; /* Black font */
+    line-height: 1.8;
+    font-size: 1rem;
+    text-align: justify;
+}
+
+/* ============================================================
+   6. RESPONSIVE FIXES
+   ============================================================ */
+@media (max-width: 768px) {
+    .terms-title {
+        font-size: 2.2rem;
+    }
+    
+    .terms-content-box {
+        padding: 25px;
+    }
+    
+    .terms-list-summary {
+        padding: 20px 30px;
+    }
+}
+
+/*ERIN*/
+.cart-title {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 800 !important; /* Extra Bold */
+    color: #7A2E2E !important;
+    font-size: 2.2rem;
+    letter-spacing: -0.02em;
+}
+
+.place-order-button {
+    background-color: #7A2E2E !important; /* Forces your brand maroon */
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    padding: 10px 45px !important;
+    transition: background 0.2s ease-in-out;
+}
+.place-order-button:hover {
+    background-color: #5a1f1f !important; /* Darker maroon on hover */
+}
+>>>>>>> d83c3e23313c9c20dbee7ec6c8a4edb397eb94a8
