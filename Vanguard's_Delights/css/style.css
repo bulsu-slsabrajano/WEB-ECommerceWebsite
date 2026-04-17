@@ -1708,8 +1708,6 @@ body {
     }
 }
 
-<<<<<<< HEAD
-=======
 
 /* terms */
 /* ============================================================
@@ -1862,4 +1860,35 @@ body {
 .place-order-button:hover {
     background-color: #5a1f1f !important; /* Darker maroon on hover */
 }
->>>>>>> d83c3e23313c9c20dbee7ec6c8a4edb397eb94a8
+
+===== FIX: Cart & Profile Icon Clickability =====
+.vd-action-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    position: relative !important;
+    z-index: 999 !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+}
+
+.vd-profile-trigger {
+    display: inline-flex !important;
+    align-items: center !important;
+    position: relative !important;
+    z-index: 999 !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+}
+
+.vd-actions {
+    position: relative !important;
+    z-index: 999 !important;
+    pointer-events: auto !important;
+}
+
+.vd-actions a img,
+.vd-profile-trigger img {
+    pointer-events: none !important; /* Clicks pass through image to the <a> tag */
+}

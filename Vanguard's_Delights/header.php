@@ -4,7 +4,16 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Base URL points to the root folder
 $base_url     = "/Vanguard's_Delights/"; 
+
+// Verified Paths based on your image structure
+$cart_path    = $base_url . "customerUI/Cart_Checkout/cart.php";
+$profile_path = $base_url . "profile.php";
+$login_path   = $base_url . "login.php";
+$logout_path  = $base_url . "logout.php";
+$home_path    = $base_url . "home.php";
+
 $cart_count   = $cart_count   ?? 0;
 $search_query = $search_query ?? '';
 
@@ -13,8 +22,7 @@ if ($cart_count === 0 && !empty($_SESSION['cart'])) {
 }
 
 // 2. Check if the user is actually logged in
-$is_logged_in = !empty($_SESSION['login_data']);
-$user_name    = $is_logged_in ? ($_SESSION['login_data']['first_name'] ?? '') : '';
+$is_logged_in = isset($_SESSION['user_id']) && isset($_SESSION['role']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +40,7 @@ $user_name    = $is_logged_in ? ($_SESSION['login_data']['first_name'] ?? '') : 
 <body>
 
 <header class="vd-header">
-    <a href="<?= $base_url ?>homepage.php" class="vd-brand">
+    <a href="<?= $home_path ?>" class="vd-brand">
         <img src="<?= $base_url ?>images/logoVanguards.png" alt="Logo" class="header-logo">
         <div class="vd-brand-text">
             <span class="vd-brand-name">Vanguard's<br>Delights</span>
@@ -48,7 +56,7 @@ $user_name    = $is_logged_in ? ($_SESSION['login_data']['first_name'] ?? '') : 
         </form>
 
         <div class="vd-actions">
-            <a href="<?= $base_url ?>cart.php" class="vd-action-btn">
+            <a href="<?= $cart_path ?>" class="vd-action-btn">
                 <img src="<?= $base_url ?>images/shopcart.png" alt="Cart" class="header-icon-img">
                 <?php if ($cart_count > 0): ?>
                     <span class="vd-cart-badge"><?= $cart_count ?></span>
@@ -57,21 +65,15 @@ $user_name    = $is_logged_in ? ($_SESSION['login_data']['first_name'] ?? '') : 
 
             <?php if ($is_logged_in): ?>
                 <div class="vd-user-dropdown" style="position: relative; display: flex; align-items: center;">
-                    <a href="<?= $base_url ?>profile.php">
-                        <img src="<?= $base_url ?>images/profilepic.png" alt="Profile" class="header-icon-img">
-                    </a>
-                    
-                    <button class="btn p-0 border-0 ms-1" id="vdUserBtn" style="color: white; font-size: 10px; background: transparent;">
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </button>
-
-                    <div class="vd-dropdown-menu" id="vdDropdown">
-                        <a href="<?= $base_url ?>profile.php" class="vd-dropdown-item">My Profile</a>
-                        <a href="<?= $base_url ?>logout.php" class="vd-dropdown-item text-danger">Logout</a>
-                    </div>
-                </div>
+                   <a href="<?= htmlspecialchars($profile_path) ?>">
+    <img src="<?= $base_url ?>images/profilepic.png" 
+         alt="Profile" 
+         class="header-icon-img"
+         style="cursor: pointer;">
+</a>
+                   
             <?php else: ?>
-                <a href="<?= $base_url ?>login.php" class="vd-action-btn">
+                <a href="<?= $login_path ?>" class="vd-action-btn">
                     <img src="<?= $base_url ?>images/profilepic.png" alt="Login" class="header-icon-img">
                 </a>
             <?php endif; ?>
