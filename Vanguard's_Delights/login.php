@@ -74,6 +74,5 @@ if (isset($_GET['error']) && in_array($_GET['error'], $allowed_errors)) {
         </div>
     </div>
 
-
 </body>
 </html>

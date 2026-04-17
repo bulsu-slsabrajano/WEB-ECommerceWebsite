@@ -1891,3 +1891,346 @@ body {
 .vd-profile-trigger img {
     pointer-events: none !important; /* Clicks pass through image to the <a> tag */
 }
+
+/* ── CAROUSEL HOMEPAGE ── */
+body { 
+    font-family: 'Arial', sans-serif; 
+    background-color: #fff; 
+    margin: 0;
+}
+
+h2 { 
+    text-align: left; 
+    color: #803020; 
+    margin: 50px 0 20px 40px; 
+    font-size: 1.6rem; 
+}
+
+/* ── Hero Image Carousel ── */
+.hero-carousel {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    overflow: hidden;
+}
+
+.hero-carousel input[type="radio"] {
+    display: none;
+}
+
+.hero-slides {
+    display: flex;
+    width: 500%;
+    height: 100%;
+    transition: transform 0.6s ease-in-out;
+}
+
+.hero-slide {
+    width: 20%;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+.hero-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Radio-driven slide positions */
+#s1:checked ~ .hero-slides { transform: translateX(0%); }
+#s2:checked ~ .hero-slides { transform: translateX(-20%); }
+#s3:checked ~ .hero-slides { transform: translateX(-40%); }
+#s4:checked ~ .hero-slides { transform: translateX(-60%); }
+#s5:checked ~ .hero-slides { transform: translateX(-80%); }
+
+
+#s1:checked ~ .hero-dots label[for="s1"],
+#s2:checked ~ .hero-dots label[for="s2"],
+#s3:checked ~ .hero-dots label[for="s3"],
+#s4:checked ~ .hero-dots label[for="s4"],
+#s5:checked ~ .hero-dots label[for="s5"] {
+    background: #fff;
+}
+
+
+/* ── Product Section Container ── */
+.carousel-container {
+    width: 100%;
+    padding: 20px 0;
+    background: #fff;
+}
+
+/* ── The Grid of Boxes ── */
+.carousel-track {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 25px;
+    padding: 0 40px;
+}
+
+/* ── Individual Card Styling ── */
+.product-card {
+    width: 200px;
+    height: 320px;                     /* Fixed total card height */
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 2px solid #a64d3b;
+    border-radius: 10px;
+    overflow: hidden;
+    color: white;
+}
+
+/* ── White Image Box on Top ── */
+.image-box {
+    height: 160px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;                 /* Makes image fill the box nicely */
+}
+
+/* ── Brown Details Area at Bottom ── */
+.details {
+    padding: 12px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: #a64d3b;               /* Brown only on the text section */
+}
+
+.details h3 {
+    margin: 0 0 6px 0;
+    font-size: 0.95rem;
+    min-height: unset;                 /* Remove fixed height */
+}
+
+/* ── Truncate long descriptions with "..." ── */
+.details p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: white;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;             /* Show max 3 lines, then "..." */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.price {
+    margin-top: auto;
+    padding-top: 10px;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+/* ══════════════════════════════════════
+   PRODUCT DETAILS PAGE
+   ══════════════════════════════════════ */
+
+.pd-main {
+    background: #f0ebe3;
+    min-height: 100vh;
+    padding: 24px 60px 60px;
+}
+
+/* ── Breadcrumb ── */
+.pd-breadcrumb {
+    font-size: 0.875rem;
+    color: #555;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.pd-breadcrumb a {
+    color: #555;
+    text-decoration: none;
+}
+.pd-breadcrumb a:hover {
+    text-decoration: underline;
+}
+.pd-breadcrumb-sep { color: #999; }
+.pd-breadcrumb-current {
+    color: #222;
+    font-weight: 500;
+}
+
+/* ── Card ── */
+.pd-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 40px;
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+    max-width: 860px;
+}
+
+/* ── Image Box ── */
+.pd-image-box {
+    flex-shrink: 0;
+    width: 220px;
+    height: 220px;
+    background: #f9f6f2;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.pd-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* ── Details ── */
+.pd-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.pd-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+/* ── Stock Badge ── */
+.pd-stock-badge {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #000;                  /* black text for all states */
+    padding: 0;
+    background: none;             /* remove colored pill background */
+    border-radius: 0;
+}
+
+/* remove colored variants — all same now */
+.pd-stock--high,
+.pd-stock--low,
+.pd-stock--out {
+    background: none;
+    color: #000;
+}
+
+/* ── Card centered ── */
+.pd-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 40px;
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+    max-width: 860px;
+    margin: 0 auto;               /* centers the card */
+}
+
+/* ── Price ── */
+.pd-price {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #a64d3b;
+    margin: 0;
+}
+
+/* ── Divider ── */
+.pd-divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 4px 0;
+}
+
+/* ── Description ── */
+.pd-description {
+    font-size: 0.875rem;
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ── Quantity ── */
+.pd-quantity-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 4px;
+}
+.pd-quantity-label {
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+}
+.pd-quantity-ctrl {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 4px 10px;
+}
+.pd-qty-btn {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #333;
+    padding: 0 4px;
+    line-height: 1;
+}
+.pd-qty-btn:hover { color: #a64d3b; }
+.pd-qty-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    min-width: 16px;
+    text-align: center;
+}
+
+/* ── Action Buttons ── */
+.pd-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+.pd-btn {
+    flex: 1;
+    padding: 10px 0;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.pd-btn:hover { opacity: 0.85; }
+.pd-btn--outline {
+    background: #fff;
+    border: 2px solid #a64d3b;
+    color: #a64d3b;
+}
+.pd-btn--fill {
+    background: #7a1f1f;
+    border: 2px solid #7a1f1f;
+    color: #fff;
+}
+.pd-btn--disabled {
+    background: #e0e0e0;
+    border: 2px solid #ccc;
+    color: #999;
+    cursor: not-allowed;
+}
+.pd-btn--disabled:hover { opacity: 1; }
