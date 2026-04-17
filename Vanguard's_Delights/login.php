@@ -74,7 +74,6 @@ if (isset($_GET['error']) && in_array($_GET['error'], $allowed_errors)) {
         </div>
     </div>
 
-    <?php include('footer.php'); ?>
 
 </body>
 </html>

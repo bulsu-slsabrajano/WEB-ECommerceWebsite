@@ -1214,7 +1214,7 @@ body {
 
 .login-split-container {
     display: flex;
-    min-height: 80vh; /* Leaves room for the footer */
+    min-height: 100vh; /* Leaves room for the footer */
 }
 
 /* Left Section */
@@ -1861,7 +1861,6 @@ body {
     background-color: #5a1f1f !important; /* Darker maroon on hover */
 }
 
-===== FIX: Cart & Profile Icon Clickability =====
 .vd-action-btn {
     display: inline-flex !important;
     align-items: center !important;

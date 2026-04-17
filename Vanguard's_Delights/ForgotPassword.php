@@ -57,7 +57,6 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
         </div>
     </div>
 
-    <?php include('footer.php'); ?>
 
 </body>
 </html>

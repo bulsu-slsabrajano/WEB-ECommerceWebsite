@@ -71,7 +71,5 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
         </div>
     </div>
 
-    <?php include('footer.php'); ?>
-
 </body>
 </html>
