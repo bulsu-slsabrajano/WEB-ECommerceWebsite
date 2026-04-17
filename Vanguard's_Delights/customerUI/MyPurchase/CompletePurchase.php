@@ -2,59 +2,48 @@
 session_start();
 require_once '../../db/connection.php';
 
-// Redirect if not logged in
 if (!isset($_SESSION['username'])) {
-    header('Location: ../../login.html');
+    header("Location: ../../login.html");
     exit;
 }
 
 $username = $_SESSION['username'];
 
 try {
-    // 1. Get user info using PDO syntax
-    $stmt = $conn->prepare("SELECT User_Id, first_name, last_name FROM USERS WHERE username = ?");
+    $stmt = $conn->prepare("SELECT user_id, first_name, last_name, image_url FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$user) {
-        die("User session invalid. Please log in again.");
-    }
+    if (!$user) die("User session invalid.");
 
-    $userId = $user['User_Id'];
+    $userId = $user['user_id'];
 
-    // 2. Fetch all completed orders 
     $ordersStmt = $conn->prepare("
-        SELECT o.Order_Id, o.order_date, o.total_amount, o.order_status,
-               p.name AS product_name, p.image_url, p.price,
-               oi.quantity, oi.subtotal
-        FROM ORDERS o
-        JOIN ORDER_ITEMS oi ON o.Order_Id = oi.order_id
-        JOIN PRODUCTS p ON oi.product_id = p.Product_Id
-        WHERE o.user_id = ? AND o.order_status = 'Completed'
+        SELECT
+            o.order_id, o.order_date, o.total_amount, o.order_status,
+            oi.quantity, oi.price, oi.subtotal,
+            p.product_id, p.name AS product_name, p.image_url
+        FROM orders o
+        INNER JOIN order_items oi ON o.order_id = oi.order_id
+        INNER JOIN products p ON oi.product_id = p.product_id
+        WHERE o.user_id = ? AND TRIM(o.order_status) = 'Completed'
         ORDER BY o.order_date DESC
     ");
     $ordersStmt->execute([$userId]);
     $results = $ordersStmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // 3. Group items by order
     $orders = [];
     foreach ($results as $row) {
-        $oid = $row['Order_Id'];
+        $oid = $row['order_id'];
         if (!isset($orders[$oid])) {
             $orders[$oid] = [
-                'Order_Id'     => $row['Order_Id'],
+                'order_id'     => $row['order_id'],
                 'order_date'   => $row['order_date'],
                 'total_amount' => $row['total_amount'],
                 'items'        => []
             ];
         }
-        $orders[$oid]['items'][] = [
-            'product_name' => $row['product_name'],
-            'image_url'    => $row['image_url'],
-            'quantity'     => $row['quantity'],
-            'price'        => $row['price'],
-            'subtotal'     => $row['subtotal']
-        ];
+        $orders[$oid]['items'][] = $row;
     }
 } catch (PDOException $e) {
     die("Database error: " . $e->getMessage());
@@ -63,123 +52,116 @@ try {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Purchases – Completed | Vanguard's Delights</title>
-    <link rel="stylesheet" href="../../css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .purchases-page { background-color: #fdfcf9; min-height: 100vh; padding: 40px 0 60px; }
-        .account-wrapper { background-color: white; border: 1px solid #e0e0e0; border-radius: 10px; display: flex; overflow: hidden; min-height: 500px; }
-        .account-sidebar { background-color: #7A2E2E; width: 230px; flex-shrink: 0; padding: 30px 0 20px; display: flex; flex-direction: column; align-items: center; }
-        .profile-avatar { width: 65px; height: 65px; background-color: #d8d8d8; color: #666; font-size: 28px; font-weight: 600; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 10px; }
-        .sidebar-username { color: white; font-size: 13px; font-weight: 500; margin-bottom: 25px; text-align: center; padding: 0 15px; word-break: break-all; }
-        .account-nav { width: 100%; }
-        .account-nav .nav-item { color: white; text-decoration: none; padding: 14px 25px; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; transition: background 0.2s; }
-        .account-nav .nav-item:hover, .account-nav .nav-item.active { background-color: rgba(255, 255, 255, 0.15); }
-        .account-content { flex: 1; padding: 30px 35px; }
-        .page-title { font-family: 'Poppins', sans-serif; font-weight: 800; color: #7A2E2E; font-size: 2rem; margin-bottom: 20px; }
-        .purchase-tabs { display: flex; gap: 8px; margin-bottom: 25px; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; }
-        .tab-link { color: #7A2E2E; text-decoration: none; padding: 7px 22px; border-radius: 6px; font-weight: 600; font-size: 14px; }
-        .tab-link.active { background-color: #e3dec9; }
-        .order-card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; margin-bottom: 18px; overflow: hidden; }
-        .order-card-header { background-color: #f9f7f3; border-bottom: 1px solid #e8e4da; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-        .order-item-row { display: flex; align-items: center; gap: 18px; padding: 12px 20px; border-bottom: 1px solid #f0ebe0; }
-        .order-product-img { width: 75px; height: 75px; object-fit: cover; border-radius: 8px; background-color: #eee; }
-        .order-item-info { flex: 1; }
-        .order-item-price { font-weight: 700; text-align: right; min-width: 90px; }
-        .order-card-footer { background-color: #fdfcf9; border-top: 1px solid #e8e4da; padding: 14px 20px; display: flex; justify-content: space-between; }
-        .badge-completed { background-color: #d1e7dd; color: #0a6640; border: 1px solid #a3cfbb; border-radius: 20px; padding: 3px 14px; font-size: 12px; }
-        .empty-state { text-align: center; padding: 60px 20px; color: #aaa; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Completed Purchases | Vanguard's Delights</title>
+<link rel="stylesheet" href="../../css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body { background: #fff; }
+.purchases-page { background: #fff; min-height: 100vh; padding: 40px 0; }
+.page-title { color: #7A2E2E; font-weight: 800; font-size: 2rem; margin-bottom: 20px; }
+.account-container { display: flex; background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.08); min-height: 600px; }
+.account-sidebar { width: 280px; background: #7A2E2E; color: #fff; padding: 40px 0; flex-shrink: 0; }
+.profile-info { text-align: center; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 20px; }
+.avatar-circle { width: 70px; height: 70px; border-radius: 50%; overflow: hidden; background: #ddd; display: flex; align-items: center; justify-content: center; margin: auto; font-weight: bold; font-size: 1.5rem; color: #7A2E2E; }
+.avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+.nav-item-link { display: flex; gap: 12px; padding: 15px 30px; color: rgba(255,255,255,.8); text-decoration: none; align-items: center; }
+.nav-item-link:hover, .nav-item-link.active { background: rgba(255,255,255,.15); color: #fff; }
+.account-main-content { flex: 1; padding: 40px; background: #fff; }
+.tabs-row { display: flex; gap: 10px; border-bottom: 2px solid #7A2E2E; padding-bottom: 0; margin-bottom: 30px; }
+.tab-btn { text-decoration: none; color: #7A2E2E; font-weight: 700; padding: 8px 22px; border-radius: 8px 8px 0 0; display: inline-block; }
+.tab-btn.active { background: #E3DEC9; color: #7A2E2E; }
+.tab-btn:hover { background: #f0ebe0; color: #7A2E2E; }
+.order-card { border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; margin-bottom: 20px; background: #fff; }
+.product-img { width: 100px; height: 85px; object-fit: cover; border-radius: 10px; border: 1px solid #ddd; }
+.completed-badge { color: #198754; font-weight: 700; font-size: 0.95rem; }
+.empty-state { text-align: center; padding: 60px 0; color: #aaa; }
+</style>
 </head>
 <body>
-
 <?php include '../../header.php'; ?>
 
 <div class="purchases-page">
     <div class="container">
-        <div class="account-wrapper">
+        <h2 class="page-title">Purchases</h2>
+        <div class="account-container">
 
+            <!-- SIDEBAR -->
             <div class="account-sidebar">
-                <div class="profile-avatar">
-                    <?= htmlspecialchars(strtoupper(substr($user['first_name'] ?? 'U', 0, 1))) ?>
+                <div class="profile-info">
+                    <div class="avatar-circle">
+                        <?php if (!empty($user['image_url'])): ?>
+                            <img src="../../uploads/<?= htmlspecialchars($user['image_url']) ?>">
+                        <?php else: ?>
+                            <?= strtoupper(substr($user['first_name'], 0, 1)) ?>
+                        <?php endif; ?>
+                    </div>
+                    <div class="mt-2 fw-bold"><?= htmlspecialchars($username) ?></div>
                 </div>
-                <div class="sidebar-username"><?= htmlspecialchars($username) ?></div>
-                <nav class="account-nav">
-                    <a href="../../profile.php" class="nav-item">
-                        <i class="fa-regular fa-user"></i> My Account
-                    </a>
-                    <a href="PendingPurchase.php" class="nav-item active">
-                        <i class="fa-solid fa-bag-shopping"></i> My Purchases
-                    </a>
-                    <a href="../../logout.php" class="nav-item">
-                        <i class="fa-solid fa-right-from-bracket"></i> Log Out
-                    </a>
+                <nav>
+                    <a href="../../profile.php" class="nav-item-link"><i class="fa-regular fa-user"></i> My Account</a>
+                    <a href="PendingPurchase.php" class="nav-item-link active"><i class="fa-solid fa-bag-shopping"></i> My Purchases</a>
+                    <a href="../../logout.php" class="nav-item-link"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a>
                 </nav>
             </div>
 
-            <div class="account-content">
-                <h2 class="page-title">My Purchases</h2>
-                
-                <div class="purchase-tabs">
-                    <a href="PendingPurchase.php"   class="tab-link">Pending</a>
-                    <a href="CompletePurchase.php" class="tab-link active">Completed</a>
-                    <a href="CancelledPurchase.php" class="tab-link">Cancelled</a>
+            <!-- MAIN -->
+            <div class="account-main-content">
+                <h2 style="color:#7A2E2E;font-weight:bold;">My Purchases</h2>
+                <p class="text-muted">View and track your order history</p>
+
+                <div class="tabs-row">
+                    <a href="PendingPurchase.php" class="tab-btn">Pending</a>
+                    <a href="CompletePurchase.php" class="tab-btn active">Completed</a>
+                    <a href="CancelledPurchase.php" class="tab-btn">Cancelled</a>
                 </div>
 
                 <?php if (empty($orders)): ?>
                     <div class="empty-state">
-                        <i class="fa-regular fa-folder-open" style="font-size: 3rem; margin-bottom: 10px;"></i>
-                        <p>No Completed Orders for Now.</p>
+                        <i class="fa-solid fa-check-double fa-3x mb-3"></i>
+                        <p>No completed orders found.</p>
                     </div>
                 <?php else: ?>
                     <?php foreach ($orders as $order): ?>
                         <div class="order-card">
-                            <div class="order-card-header">
-                                <div>
-                                    <strong>Order ID: #<?= htmlspecialchars($order['Order_Id']) ?></strong>
-                                    &nbsp;|&nbsp;
-                                    <?= date('F j, Y', strtotime($order['order_date'])) ?>
-                                </div>
-                                <span class="badge-completed">Completed</span>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-muted small">
+                                    <?= date("F j, Y", strtotime($order['order_date'])) ?>
+                                </span>
+                                <span class="completed-badge">
+                                    <i class="fa-solid fa-circle-check"></i> Completed
+                                </span>
                             </div>
 
-                            <div class="order-card-body">
-                                <?php foreach ($order['items'] as $item): ?>
-                                    <div class="order-item-row">
-                                        <img src="<?= htmlspecialchars($item['image_url'] ?? '') ?>" 
-                                             alt="<?= htmlspecialchars($item['product_name']) ?>" 
-                                             class="order-product-img"
-                                             onerror="this.src='../../images/placeholder.png'">
-                                        <div class="order-item-info">
-                                            <div class="product-name" style="font-weight:600;"><?= htmlspecialchars($item['product_name']) ?></div>
-                                            <div class="item-meta" style="font-size:12px; color:#888;">
-                                                Qty: <?= htmlspecialchars($item['quantity']) ?> &nbsp;|&nbsp; ₱<?= number_format($item['price'], 2) ?> each
-                                            </div>
-                                        </div>
-                                        <div class="order-item-price">₱<?= number_format($item['subtotal'], 2) ?></div>
+                            <?php foreach ($order['items'] as $item): ?>
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-auto">
+                                        <img src="<?= !empty($item['image_url']) ? htmlspecialchars($item['image_url']) : '../../images/placeholder.png' ?>" class="product-img">
                                     </div>
-                                <?php endforeach; ?>
-                            </div>
-
-                            <div class="order-card-footer">
-                                <div class="order-total">
-                                    Order Total: <span style="font-weight:800; color:#7A2E2E; font-size:1.1rem;">₱<?= number_format($order['total_amount'], 2) ?></span>
+                                    <div class="col">
+                                        <h6 class="fw-bold mb-1"><?= htmlspecialchars($item['product_name']) ?></h6>
+                                        <p class="mb-0 text-muted small">Qty: <?= $item['quantity'] ?> | ₱<?= number_format($item['price'], 2) ?></p>
+                                    </div>
+                                    <div class="col-auto text-end fw-bold">
+                                        ₱<?= number_format($item['subtotal'], 2) ?>
+                                    </div>
                                 </div>
+                            <?php endforeach; ?>
+
+                            <div class="d-flex justify-content-end align-items-center border-top pt-3 mt-2">
+                                <span class="text-muted me-2">Order Total:</span>
+                                <span class="fw-bold fs-5" style="color:#7A2E2E;">₱<?= number_format($order['total_amount'], 2) ?></span>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
-
             </div>
         </div>
     </div>
 </div>
 
 <?php include '../../footer.php'; ?>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

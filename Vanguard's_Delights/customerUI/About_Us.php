@@ -1,3 +1,7 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
 <?php 
 // Kinukuha ang header mula sa main folder
 include '../header.php'; 
@@ -33,27 +37,33 @@ include '../header.php';
         color: #ffffff !important;
     }
     
-    /* Layout adjustment para sa header */
+    /* Layout adjustment para sa header at pagtanggal ng white line */
     .about-hero-section {
-        margin-top: -20px; 
+        margin-top: 0; /* Tinanggal ang -20px para mawala ang puting linya */
+        padding: 0;
+    }
+
+    /* Siguraduhin na walang margin ang carousel */
+    #heroCarousel {
+        margin: 0;
     }
 </style>
-<section class="about-hero-section w-100 position-relative">
+
+<section class="about-hero-section w-100 position-relative" style="height: 500px; overflow: hidden;">
     <div id="heroCarousel" class="carousel slide carousel-fade position-absolute w-100 h-100" data-bs-ride="carousel" style="top:0; left:0; z-index:1;">
         <div class="carousel-inner h-100">
-            <div class="carousel-item active h-100" style="background: linear-gradient(rgba(126, 42, 42, 0.7), rgba(126, 42, 42, 0.7)), url('../images/headerPic.png') center/cover no-repeat;"></div>
-            <div class="carousel-item h-100" style="background: linear-gradient(rgba(126, 42, 42, 0.7), rgba(126, 42, 42, 0.7)), url('../images/P1.png') center/cover no-repeat;"></div>
-            <div class="carousel-item h-100" style="background: linear-gradient(rgba(126, 42, 42, 0.7), rgba(126, 42, 42, 0.7)), url('../images/P2.png') center/cover no-repeat;"></div>
+            <div class="carousel-item active h-100" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/headerPic.png') center/cover no-repeat;"></div>
+            <div class="carousel-item h-100" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/P1.png') center/cover no-repeat;"></div>
+            <div class="carousel-item h-100" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/P2.png') center/cover no-repeat;"></div>
         </div>
     </div>
-
 
     <div class="container text-white position-relative d-flex flex-column h-100" style="z-index: 2; padding-top: 60px;">
         
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-2">
                 <li class="breadcrumb-item">
-                    <a href="../homepage.php" class="breadcrumb-link" style="color: #cccccc;">Home</a>
+                    <a href="../home.php" class="home breadcrumb-link" style="color: #cccccc;">Home</a>
                 </li>
                 <li class="breadcrumb-item active breadcrumb-current text-white" aria-current="page">
                     About Us
@@ -67,10 +77,13 @@ include '../header.php';
             <p class="hero-subtitle">Your cravings just found their leader.</p>
         </div>
 
-        <button class="hero-explore-btn">
-            Explore Shop →
-        </button>
-        
+        <div style="text-align: right; width: 100%;">
+            <a href="../home.php" style="text-decoration: none;">
+                <button class="hero-explore-btn">
+                    Explore Shop →
+                </button>
+            </a>
+        </div>
     </div>
 </section>
 
@@ -152,3 +165,6 @@ include '../header.php';
 // Kinukuha ang footer mula sa main folder
 include '../footer.php'; 
 ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

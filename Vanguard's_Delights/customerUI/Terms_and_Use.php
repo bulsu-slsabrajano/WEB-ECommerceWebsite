@@ -91,7 +91,7 @@
 
 <div class="container">
     <nav class="breadcrumb-nav">
-        <a href="../homepage.php">Home</a> <span>&gt;</span> <span class="active-page">Terms and Use</span>
+        <a href="../home.php">Home</a> <span>&gt;</span> <span class="active-page">Terms and Use</span>
     </nav>
 
     <main class="terms-container">

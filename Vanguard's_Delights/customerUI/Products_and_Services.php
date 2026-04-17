@@ -39,8 +39,8 @@ include '../header.php';
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="../homepage.php" class="breadcrumb-link">Home</a>
-            </li>
+                 <a href="../home.php" class="home breadcrumb-link" style="color: #cccccc;">Home</a>
+                    </li>
             <li class="breadcrumb-item active breadcrumb-current" aria-current="page">
                 Products and Services
             </li>
@@ -63,14 +63,22 @@ include '../header.php';
             </div>
         </div>
 
-        <p class="section-desc mt-4">
-            Our products include cakes (custom and special occasion cakes), cupcakes, cookies, and pastries. 
-            Each product is carefully prepared to ensure freshness, quality, and great taste.
+        <p class="section-desc mt-4" style="text-align: center; max-width: 900px; margin-left: auto; margin-right: auto;">
+    Our products include cakes (custom and special occasion cakes), cupcakes, cookies, and pastries. Each product is carefully prepared to ensure freshness, quality, and great taste.
+</p>
         </p>
-        <button class="explore-btn mt-2">Explore Products</button>
-    </section>
+     <div style="text-align: center; width: 100%; clear: both;">
+    <a href="../home.php" style="text-decoration: none;">
+        <button class="explore-btn mt-2" type="button">
+            Explore Products
+        </button>
+    </a>
+</div>
 
-    <section class="my-5 pt-5">
+</div>
+    </a>
+
+    <section class="my-4 pt-4">
         <h1 class="section-title text-center">Our Services</h1>
         <p class="section-subtitle text-center mb-5">We provide services that make ordering desserts convenient for our customers.</p>
         
@@ -78,14 +86,15 @@ include '../header.php';
             <div class="col-lg-12">
                 <img src="../images/F1.png" class="custom-banner-img shadow-sm" alt="Services Banner">
                 
-                <div class="service-list-container mt-4">
-                    <h4 class="section-title-small text-start">Services include:</h4>
-                    <ul class="custom-list">
-                        <li>Custom cake orders for birthdays and events</li>
-                        <li>Dessert preparation for small celebrations</li>
-                        <li>Online ordering through the website</li>
-                        <li>Customer support for inquiries and orders</li>
-                    </ul>
+                <div class="service-list-container mt-4" style="text-align: left;">
+    <h4 class="section-title-small text-start">Services include:</h4>
+    <ul class="custom-list" style="list-style-position: inside; padding-left: 0;">
+        <li>Custom cake orders for birthdays and events</li>
+        <li>Dessert preparation for small celebrations</li>
+        <li>Online ordering through the website</li>
+        <li>Customer support for inquiries and orders</li>
+    </ul>
+</div>
                 </div>
             </div>
         </div>
