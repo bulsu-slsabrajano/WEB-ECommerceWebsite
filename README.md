@@ -1,9 +1,9 @@
 # WEB-ECommerceWebsite
 **Project Description**
 
-    Vanguard’s Delights is an eCommerce website focused on selling pastry-based products such as cakes, bread, and other baked goods. The system is designed to provide users with a convenient and user-friendly platform where they can browse products, place orders, and manage their accounts online.
+Vanguard’s Delights is an eCommerce website focused on selling pastry-based products such as cakes, bread, and other baked goods. The system is designed to provide users with a convenient and user-friendly platform where they can browse products, place orders, and manage their accounts online.
 
-    The website also includes an administrative side that allows authorized users to manage products and monitor the system efficiently. Overall, the project aims to simulate a real-world online pastry shop that improves accessibility and simplifies the ordering process for customers.
+The website also includes an administrative side that allows authorized users to manage products and monitor the system efficiently. Overall, the project aims to simulate a real-world online pastry shop that improves accessibility and simplifies the ordering process for customers.
 
 **Features**
 
