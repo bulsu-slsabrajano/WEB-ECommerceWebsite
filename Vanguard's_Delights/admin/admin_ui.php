@@ -40,7 +40,7 @@ $admin_name = $_SESSION["login_data"]["first_name"] ?? "Admin";
         </div>
         <div class="sidebar-footer">
             <hr>
-            <a href="../db/action/logout.php" class="list-group-item logout-btn">
+            <a href="../login.php" class="list-group-item logout-btn">
                 <i class="fa-solid fa-right-from-bracket"></i>Log Out
             </a>
         </div>

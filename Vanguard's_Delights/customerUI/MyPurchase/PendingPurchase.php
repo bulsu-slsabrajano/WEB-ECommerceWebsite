@@ -21,7 +21,7 @@ try {
     $ordersStmt = $conn->prepare("
         SELECT
             o.order_id, o.order_date, o.total_amount, o.order_status,
-            oi.quantity, oi.price, oi.subtotal,
+            oi.quantity, p.price, oi.subtotal,
             p.product_id, p.name AS product_name, p.image_url
         FROM orders o
         INNER JOIN order_items oi ON o.order_id = oi.order_id
@@ -194,7 +194,6 @@ body { background: #fff; }
 </div>
 
 <?php include '../../footer.php'; ?>
-<?php include '../../footer.php'; ?>
 
 <script>
 let currentOrderId = null;
@@ -204,67 +203,68 @@ function openConfirmModal(orderId, action) {
     currentOrderId = orderId;
     currentAction  = action;
 
-    const title = document.getElementById('modalTitle');
+    const title    = document.getElementById('modalTitle');
     const question = document.getElementById('modalQuestion');
-    
-    if(action === 'received') {
-        title.innerText = 'Confirm Order Received';
+
+    if (action === 'received') {
+        title.innerText    = 'Confirm Order Received';
         question.innerText = 'Have you received this order?';
     } else {
-        title.innerText = 'Confirm Cancellation';
+        title.innerText    = 'Confirm Cancellation';
         question.innerText = 'Are you sure you want to cancel this order?';
     }
-    
+
     document.getElementById('confirmModal').classList.add('show');
 }
 
 function closeConfirmModal() {
     document.getElementById('confirmModal').classList.remove('show');
+    const btn = document.getElementById('confirmYesBtn');
+    btn.disabled  = false;
+    btn.innerText = 'Yes';
 }
 
 document.getElementById('confirmYesBtn').addEventListener('click', function () {
     if (!currentOrderId) return;
 
-    const btn = this;
+    const btn    = this;
     btn.disabled = true;
     btn.innerText = 'Processing...';
 
     const formData = new FormData();
     formData.append('order_id', currentOrderId);
-    formData.append('action', currentAction);
+    formData.append('action',   currentAction);
 
     fetch('update_order_status.php', {
         method: 'POST',
         body: formData
     })
-    .then(res => res.text()) // Kunin as Text para iwas error
-    .then(text => {
-        console.log("Raw Response from Server:", text);
-        
-        // ULTIMATE FIX: Kahit may error sa format, basta natapos ang request
-        // Ililipat na natin ang page para makita ang result.
-        if (currentAction === 'received') {
-            window.location.href = 'CompletePurchase.php';
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            // DB updated successfully — now redirect
+            if (currentAction === 'received') {
+                window.location.href = 'CompletePurchase.php';
+            } else {
+                window.location.href = 'CancelledPurchase.php';
+            }
         } else {
-            window.location.href = 'CancelledPurchase.php';
+            alert('Something went wrong: ' + data.message);
+            btn.disabled  = false;
+            btn.innerText = 'Yes';
         }
     })
     .catch(err => {
-        console.error("Fetch Error:", err);
-        // Kahit nag-crash ang connection, subukan pa rin lumipat
-        window.location.href = (currentAction === 'received') ? 'CompletePurchase.php' : 'CancelledPurchase.php';
+        console.error('Fetch Error:', err);
+        alert('Network error. Please try again.');
+        btn.disabled  = false;
+        btn.innerText = 'Yes';
     });
 });
-
-function resetBtn(btn) {
-    btn.disabled = false;
-    btn.innerText = 'Yes';
-}
 
 document.getElementById('confirmModal').addEventListener('click', function (e) {
     if (e.target === this) closeConfirmModal();
 });
 </script>
-
 </body>
 </html>

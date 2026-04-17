@@ -1,95 +1,257 @@
+<!-- admin/product_form.php -->
 <?php
-require_once '../db/action/config.php'; 
-require_once '../db/connection.php'; 
-require_once '../db/action/fetch_dashboard.php'; 
+require_once '../db/action/config.php';
+require_once '../db/connection.php';
 
 session_start();
 
-// Data Fetching
-$summary        = getDashboardSummary($conn);
-$topProducts    = getTopSellingProducts($conn);
-$topCategories  = getTopSellingCategories($conn); // New function
-
-// Chart Data for JS
-$dailyData   = getDailySales($conn);
-$weeklyData  = getWeeklySales($conn);
-$monthlyData = getMonthlySales($conn);
-
 $admin_name = $_SESSION["login_data"]["first_name"] ?? "Admin";
 
-// Low stock products
-$lowStock = $conn->query("
-    SELECT name, stock_quantity FROM products 
-    WHERE stock_quantity <= 5 AND is_active = 1 
-    ORDER BY stock_quantity ASC LIMIT 5
-")->fetchAll(PDO::FETCH_ASSOC);
+// Edit mode?
+$product = null;
+if (!empty($_GET['id'])) {
+    $stmt = $conn->prepare("SELECT * FROM products WHERE product_id = ?");
+    $stmt->execute([(int)$_GET['id']]);
+    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$product) { header('Location: products.php'); exit; }
+}
+
+$isEdit = $product !== null;
+
+// Categories
+$cats = $conn->query("SELECT category_id, category_name FROM categories ORDER BY category_name")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Vanguard's Delights</title>
+    <title><?= $isEdit ? 'Edit' : 'Add' ?> Product | Vanguard's Delights</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/admin_style.css">
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
     <style>
-        /* Maintain all your original CSS here */
-        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
-        .stat-card { background: white; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,0,0,0.05); padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; }
-        .stat-card-top { display: flex; align-items: center; justify-content: space-between; }
-        .stat-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-        .stat-icon.maroon { background: var(--maroon-xlight); color: var(--maroon); }
-        .stat-icon.green { background: #EDFAF3; color: #1E7D4A; }
-        .stat-icon.blue { background: #EEF2FF; color: #3730A3; }
-        .stat-icon.orange { background: #FFF3E0; color: #E65100; }
-        .stat-label { font-size: 11.5px; font-weight: 600; color: var(--text-gray); text-transform: uppercase; letter-spacing: 0.7px; margin: 0; }
-        .stat-value { font-size: 26px; font-weight: 700; color: #1A1A1A; line-height: 1; margin: 0; }
-        .stat-sub { font-size: 12px; color: var(--text-gray); margin: 0; }
-        .dash-grid { display: grid; grid-template-columns: 1fr 340px; gap: 16px; margin-bottom: 16px; }
-        .dash-card { background: white; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,0,0,0.05); padding: 22px 24px; }
-        .dash-card-title { font-size: 14px; font-weight: 600; color: #1A1A1A; margin: 0 0 4px; }
-        .dash-card-sub { font-size: 12px; color: var(--text-gray); margin: 0 0 18px; }
-        .chart-toggle { display: flex; gap: 6px; }
-        .chart-toggle-btn { padding: 5px 14px; border: 1.5px solid var(--cream-dark); border-radius: 20px; background: white; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; color: var(--text-gray); cursor: pointer; transition: 0.2s; }
-        .chart-toggle-btn.active, .chart-toggle-btn:hover { background: var(--maroon); color: white; border-color: var(--maroon); }
-        .rank-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F8F4F0; }
-        .rank-item:last-child { border-bottom: none; }
-        .rank-num { width: 26px; height: 26px; border-radius: 8px; background: var(--maroon-xlight); color: var(--maroon); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .rank-name { flex: 1; font-size: 13px; font-weight: 500; color: #1A1A1A; }
-        .rank-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; background: var(--maroon-xlight); color: var(--maroon); font-size: 11.5px; font-weight: 600; }
-        .low-item { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid #F8F4F0; }
-        .low-item:last-child { border-bottom: none; }
-        .low-icon { width: 32px; height: 32px; border-radius: 8px; background: #FFF3E0; color: #E65100; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .low-name { flex: 1; font-size: 13px; font-weight: 500; color: #1A1A1A; }
-        .low-qty { font-size: 12px; font-weight: 700; color: #E65100; }
-        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0; padding: 20px 24px 16px; border-bottom: 1px solid var(--cream-dark); }
-        .section-header h5 { font-size: 14px; font-weight: 600; color: #1A1A1A; margin: 0; }
-        .section-link { font-size: 12.5px; font-weight: 500; color: var(--maroon); text-decoration: none; transition: 0.2s; }
-        .section-link:hover { text-decoration: underline; color: var(--maroon); }
-        .welcome-bar { margin-bottom: 20px; }
-        .welcome-bar h4 { font-size: 18px; font-weight: 600; color: #1A1A1A; margin: 0 0 2px; }
-        .welcome-bar p { font-size: 13px; color: var(--text-gray); margin: 0; }
+        .form-page-wrap { max-width: 780px; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #2D2D2D;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            margin-bottom: 6px;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--maroon); }
+
+        .page-subtitle {
+            font-size: 13px;
+            color: var(--text-gray);
+            margin: 0 0 24px;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+            padding: 28px 30px;
+            margin-bottom: 18px;
+        }
+
+        .form-card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--maroon-light);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        .form-label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin-bottom: 6px;
+        }
+
+        .form-label span.req { color: var(--maroon); }
+
+        .form-control, .form-select {
+            font-family: 'Poppins', sans-serif;
+            font-size: 13.5px;
+            border: 1.5px solid var(--cream-dark);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: #2D2D2D;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-control::placeholder { color: #BDBDBD; }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--maroon-light);
+            box-shadow: 0 0 0 3px rgba(130,47,47,0.08);
+            outline: none;
+        }
+        textarea.form-control { resize: none; }
+
+        /* Upload zone */
+        .upload-zone {
+            border: 2px dashed var(--cream-dark);
+            border-radius: 12px;
+            padding: 36px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            position: relative;
+            background: #FDFAF8;
+        }
+        .upload-zone:hover, .upload-zone.drag-over {
+            border-color: var(--maroon-light);
+            background: var(--maroon-xlight);
+        }
+        .upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .upload-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: var(--cream-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            color: var(--text-gray);
+            font-size: 20px;
+        }
+        .upload-main-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2D2D2D;
+            margin-bottom: 4px;
+        }
+        .upload-sub-text {
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+
+        /* Preview */
+        .img-preview-box {
+            display: none;
+            position: relative;
+            margin-top: 14px;
+        }
+        .img-preview-box img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid var(--cream-dark);
+        }
+        .remove-img-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: white;
+            border: 1.5px solid var(--cream-dark);
+            border-radius: 8px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #C0392B;
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+        .remove-img-btn:hover { background: #FDF0F0; }
+
+        /* Toggle switch */
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+        .toggle-label-text { font-size: 13.5px; font-weight: 500; color: #2D2D2D; }
+        .toggle-label-sub  { font-size: 12px; color: var(--text-gray); }
+        .form-switch .form-check-input {
+            width: 42px;
+            height: 22px;
+            cursor: pointer;
+        }
+        .form-switch .form-check-input:checked { background-color: var(--maroon); border-color: var(--maroon); }
+        .form-switch .form-check-input:focus { box-shadow: 0 0 0 3px rgba(130,47,47,0.12); border-color: var(--maroon-light); }
+
+        /* Buttons */
+        .btn-maroon {
+            background: var(--maroon);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13.5px;
+            font-weight: 500;
+            padding: 10px 28px;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        .btn-maroon:hover { background: var(--maroon-hover); }
+
+        .btn-cancel {
+            background: white;
+            color: #2D2D2D;
+            border: 1.5px solid var(--cream-dark);
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13.5px;
+            font-weight: 500;
+            padding: 10px 24px;
+            text-decoration: none;
+            transition: background 0.2s, border-color 0.2s;
+            display: inline-block;
+        }
+        .btn-cancel:hover { background: var(--cream-dark); color: #1A1A1A; }
+
+        .price-input-wrap { position: relative; }
+        .price-input-wrap .currency-sign {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13.5px;
+            color: var(--text-gray);
+            pointer-events: none;
+        }
+        .price-input-wrap .form-control { padding-left: 26px; }
     </style>
 </head>
 <body>
 <div class="d-flex" id="wrapper">
+
+    <!-- SIDEBAR -->
     <div id="sidebar-wrapper">
         <div class="sidebar-heading">
             <img src="../images/logo.png" alt="Logo">
             <h6>Vanguard's<br>Delights</h6>
         </div>
         <div class="nav-section">
-            <a href="dashboard.php" class="list-group-item active"><i class="fa-solid fa-gauge-high"></i>Dashboard</a>
-            <a href="products.php" class="list-group-item"><i class="fa-solid fa-box"></i>Products</a>
+            <a href="dashboard.php"  class="list-group-item"><i class="fa-solid fa-gauge-high"></i>Dashboard</a>
+            <a href="products.php"   class="list-group-item active"><i class="fa-solid fa-box"></i>Products</a>
             <a href="categories.php" class="list-group-item"><i class="fa-solid fa-layer-group"></i>Categories</a>
-            <a href="orders.php" class="list-group-item"><i class="fa-solid fa-receipt"></i>Orders</a>
-            <a href="admin_ui.php" class="list-group-item"><i class="fa-solid fa-users"></i>Customers</a>
-            <a href="reports.php" class="list-group-item"><i class="fa-solid fa-chart-line"></i>Reports</a>
-            <a href="admin_site.php" class="list-group-item"><i class="fa-solid fa-shield-halved"></i>Admin Site Settings</a>
+            <a href="orders.php"     class="list-group-item"><i class="fa-solid fa-receipt"></i>Orders</a>
+            <a href="admin_ui.php"   class="list-group-item"><i class="fa-solid fa-users"></i>Customers</a>
+            <a href="reports.php"    class="list-group-item"><i class="fa-solid fa-chart-line"></i>Reports</a>
+            <a href="admin_site.php"      class="list-group-item"><i class="fa-solid fa-shield-halved"></i>Admin Site Settings</a>
         </div>
         <div class="sidebar-footer">
             <hr>
@@ -99,9 +261,10 @@ $lowStock = $conn->query("
         </div>
     </div>
 
+    <!-- MAIN -->
     <div id="page-content-wrapper">
         <nav class="top-navbar">
-            <h3 class="page-title">Dashboard</h3>
+            <h3 class="page-title"><?= $isEdit ? 'Edit' : 'Add' ?> Product</h3>
             <div class="admin-area">
                 <div class="admin-info">
                     <p class="name"><?= htmlspecialchars($admin_name) ?></p>
@@ -112,210 +275,157 @@ $lowStock = $conn->query("
         </nav>
 
         <div class="content-area">
-            <div class="welcome-bar">
-                <h4>Welcome back, <?= htmlspecialchars($admin_name) ?>!</h4>
-                <p>Here's what's happening in your store today.</p>
+            <div class="form-page-wrap">
+
+                <a href="products.php" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Products</a>
+                <p class="page-subtitle"><?= $isEdit ? 'Update the details of this product.' : 'Fill in the details to add a new product.' ?></p>
+
+                <form method="POST" enctype="multipart/form-data" action="../db/action/save_product.php">
+                    <input type="hidden" name="product_id" value="<?= $isEdit ? $product['product_id'] : '' ?>">
+
+                    <!-- IMAGE -->
+                    <div class="form-card">
+                        <div class="form-card-title">Product Image</div>
+                        <div class="upload-zone" id="uploadZone">
+                            <input type="file" name="image" id="imageInput" accept="image/*">
+                            <div class="upload-icon"><i class="fa-solid fa-arrow-up-from-bracket"></i></div>
+                            <div class="upload-main-text">Click to upload or drag and drop</div>
+                            <div class="upload-sub-text">PNG, JPG, WEBP up to 5MB</div>
+                        </div>
+                        <div class="img-preview-box" id="previewBox">
+                            <img id="imgPreview" src="<?= $isEdit && $product['image_url'] ? htmlspecialchars($product['image_url']) : '' ?>" alt="Preview">
+                            <button type="button" class="remove-img-btn" onclick="removeImg()" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- BASIC INFO -->
+                    <div class="form-card">
+                        <div class="form-card-title">Basic Information</div>
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label">Product Name <span class="req">*</span></label>
+                                <input type="text" class="form-control" name="name" placeholder="e.g. Mini Cake, Biscoff Cookie" required value="<?= $isEdit ? htmlspecialchars($product['name']) : '' ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">SKU</label>
+                                <input type="text" class="form-control" name="sku" placeholder="e.g. VD-001" value="<?= $isEdit ? htmlspecialchars($product['sku'] ?? '') : '' ?>">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" name="description" rows="4" placeholder="Describe the product…"><?= $isEdit ? htmlspecialchars($product['description'] ?? '') : '' ?></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRICING & STOCK -->
+                    <div class="form-card">
+                        <div class="form-card-title">Pricing & Inventory</div>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Price (₱) <span class="req">*</span></label>
+                                <div class="price-input-wrap">
+                                    <span class="currency-sign">₱</span>
+                                    <input type="number" step="0.01" min="0" class="form-control" name="price" placeholder="0.00" required value="<?= $isEdit ? $product['price'] : '' ?>">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Stock Quantity <span class="req">*</span></label>
+                                <input type="number" min="0" class="form-control" name="stock_quantity" placeholder="0" required value="<?= $isEdit ? $product['stock_quantity'] : '' ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Category</label>
+                                <select class="form-select" name="category_id">
+                                    <option value="">— None —</option>
+                                    <?php foreach ($cats as $c): ?>
+                                        <option value="<?= $c['category_id'] ?>" <?= ($isEdit && $product['category_id'] == $c['category_id']) ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($c['category_name']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STATUS -->
+                    <div class="form-card">
+                        <div class="form-card-title">Visibility</div>
+                        <div class="toggle-row">
+                            <div>
+                                <div class="toggle-label-text">Active</div>
+                                <div class="toggle-label-sub">Product will be visible to customers</div>
+                            </div>
+                            <div class="form-check form-switch mb-0">
+                                <input class="form-check-input" type="checkbox" name="is_active" value="1" id="toggleActive" <?= (!$isEdit || $product['is_active']) ? 'checked' : '' ?>>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACTIONS -->
+                    <div class="d-flex gap-3 pb-4">
+                        <a href="products.php" class="btn-cancel">Cancel</a>
+                        <button type="submit" class="btn-maroon">
+                            <i class="fa-solid fa-floppy-disk me-2"></i><?= $isEdit ? 'Update Product' : 'Save Product' ?>
+                        </button>
+                    </div>
+                </form>
             </div>
-
-            <div class="stat-grid">
-                <div class="stat-card">
-                    <div class="stat-card-top">
-                        <div class="stat-icon maroon"><i class="fa-solid fa-peso-sign"></i></div>
-                        <span style="font-size:11px;font-weight:600;color:#1E7D4A;background:#EDFAF3;padding:3px 9px;border-radius:20px;">Revenue</span>
-                    </div>
-                    <div>
-                        <p class="stat-label">Total Sales</p>
-                        <p class="stat-value">₱<?= number_format($summary['total_sales'], 2) ?></p>
-                        <p class="stat-sub">From completed orders</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card-top">
-                        <div class="stat-icon blue"><i class="fa-solid fa-receipt"></i></div>
-                        <span style="font-size:11px;font-weight:600;color:#3730A3;background:#EEF2FF;padding:3px 9px;border-radius:20px;">Orders</span>
-                    </div>
-                    <div>
-                        <p class="stat-label">Total Orders</p>
-                        <p class="stat-value"><?= number_format($summary['total_orders']) ?></p>
-                        <p class="stat-sub">All time</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card-top">
-                        <div class="stat-icon green"><i class="fa-solid fa-users"></i></div>
-                        <span style="font-size:11px;font-weight:600;color:#1E7D4A;background:#EDFAF3;padding:3px 9px;border-radius:20px;">Customers</span>
-                    </div>
-                    <div>
-                        <p class="stat-label">Active Customers</p>
-                        <p class="stat-value"><?= number_format($summary['total_customers']) ?></p>
-                        <p class="stat-sub">Registered accounts</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card-top">
-                        <div class="stat-icon orange"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                        <span style="font-size:11px;font-weight:600;color:#E65100;background:#FFF3E0;padding:3px 9px;border-radius:20px;">Alert</span>
-                    </div>
-                    <div>
-                        <p class="stat-label">Low Stock Items</p>
-                        <p class="stat-value"><?= count($lowStock) ?></p>
-                        <p class="stat-sub">Products needing restock</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dash-grid">
-                <div class="dash-card">
-                    <div class="d-flex align-items-start justify-content-between mb-1">
-                        <div>
-                            <p class="dash-card-title">Sales Analytics</p>
-                            <p class="dash-card-sub">Revenue overview by period</p>
-                        </div>
-                        <div class="chart-toggle">
-                            <button class="chart-toggle-btn active" onclick="switchChart(this,'daily')">Daily</button>
-                            <button class="chart-toggle-btn" onclick="switchChart(this,'weekly')">Weekly</button>
-                            <button class="chart-toggle-btn" onclick="switchChart(this,'monthly')">Monthly</button>
-                        </div>
-                    </div>
-                    <div id="salesChart" style="width:100%;height:300px;"></div>
-                </div>
-
-                <div class="dash-card">
-                    <p class="dash-card-title">Best-Selling Products</p>
-                    <p class="dash-card-sub">Top products by units sold</p>
-                    <?php if (!empty($topProducts)): ?>
-                        <?php foreach ($topProducts as $i => $prod): ?>
-                        <div class="rank-item">
-                            <div class="rank-num"><?= $i + 1 ?></div>
-                            <span class="rank-name"><?= htmlspecialchars($prod['name']) ?></span>
-                            <span class="rank-badge"><?= $prod['sold_count'] ?> sold</span>
-                        </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <div class="empty-state">No sales data yet.</div>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <div class="dash-grid">
-                <div class="dash-card">
-                    <div class="section-header" style="padding:0 0 16px; border:none;">
-                        <h5 class="dash-card-title"><i class="fa-solid fa-triangle-exclamation me-2" style="color:#E65100;"></i>Low Stock Alerts</h5>
-                        <a href="products.php?filter=low" class="section-link">View All</a>
-                    </div>
-                    <?php if (!empty($lowStock)): ?>
-                        <?php foreach ($lowStock as $item): ?>
-                        <div class="low-item">
-                            <div class="low-icon"><i class="fa-solid fa-box"></i></div>
-                            <span class="low-name"><?= htmlspecialchars($item['name']) ?></span>
-                            <span class="low-qty"><?= $item['stock_quantity'] ?> left</span>
-                        </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <div class="empty-state" style="padding:20px 0;">
-                            <i class="fa-solid fa-circle-check" style="color:#2ECC71;"></i>
-                            All products are well stocked.
-                        </div>
-                    <?php endif; ?>
-                </div>
-
-                <div class="dash-card">
-                    <p class="dash-card-title">Top Categories</p>
-                    <p class="dash-card-sub">Highest selling product types</p>
-                    <?php if (!empty($topCategories)): ?>
-                        <?php foreach ($topCategories as $i => $cat): ?>
-                        <div class="rank-item">
-                            <div class="rank-num"><?= $i + 1 ?></div>
-                            <span class="rank-name"><?= htmlspecialchars($cat['category_name']) ?></span>
-                            <span class="rank-badge"><?= $cat['sold_count'] ?> sold</span>
-                        </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <div class="empty-state">No category data.</div>
-                    <?php endif; ?>
-                </div>
-            </div>
-
         </div>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// Data Sets from PHP
-const dataSets = {
-    daily: <?= json_encode($dailyData) ?>,
-    weekly: <?= json_encode($weeklyData) ?>,
-    monthly: <?= json_encode($monthlyData) ?>
-};
+// Show existing image on edit
+const previewBox  = document.getElementById('previewBox');
+const imgPreview  = document.getElementById('imgPreview');
 
-const formatData = (arr) => arr.map(item => ({ date: item.sales_date, value: parseFloat(item.revenue) }));
+<?php if ($isEdit && $product['image_url']): ?>
+previewBox.style.display = 'block';
+<?php endif; ?>
 
-let chartRoot, xAxis, chartSeries;
-
-am5.ready(function () {
-    chartRoot = am5.Root.new("salesChart");
-    chartRoot.setThemes([am5themes_Animated.new(chartRoot)]);
-    chartRoot._logo.dispose();
-
-    var chart = chartRoot.container.children.push(
-        am5xy.XYChart.new(chartRoot, { panX: false, panY: false, wheelX: "none", wheelY: "none" })
-    );
-
-    var xRenderer = am5xy.AxisRendererX.new(chartRoot, { minGridDistance: 30 });
-    xRenderer.labels.template.setAll({ fontSize: 11, fill: am5.color(0x7E7E7E), fontFamily: "Poppins" });
-    xRenderer.grid.template.setAll({ strokeOpacity: 0 });
-
-    xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(chartRoot, {
-        categoryField: "date",
-        renderer: xRenderer
-    }));
-
-    var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(chartRoot, {
-        renderer: am5xy.AxisRendererY.new(chartRoot, {})
-    }));
-    yAxis.get("renderer").labels.template.setAll({ fontSize: 11, fill: am5.color(0x7E7E7E) });
-
-    chartSeries = chart.series.push(am5xy.ColumnSeries.new(chartRoot, {
-        name: "Revenue",
-        xAxis: xAxis,
-        yAxis: yAxis,
-        valueYField: "value",
-        categoryXField: "date",
-        tooltip: am5.Tooltip.new(chartRoot, {
-            labelText: "₱{valueY.formatNumber('#,###.00')}",
-            getFillFromSprite: false,
-            background: am5.Rectangle.new(chartRoot, {
-                fill: am5.color(0x822F2F),
-                cornerRadiusTL: 8, cornerRadiusTR: 8, cornerRadiusBL: 8, cornerRadiusBR: 8
-            })
-        })
-    }));
-
-    chartSeries.columns.template.setAll({
-        cornerRadiusTL: 6, cornerRadiusTR: 6,
-        fill: am5.color(0x822F2F),
-        strokeOpacity: 0,
-        width: am5.percent(60)
-    });
-
-    updateChartData('daily');
-    chart.appear(1000, 100);
+document.getElementById('imageInput').addEventListener('change', function () {
+    if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            imgPreview.src = e.target.result;
+            previewBox.style.display = 'block';
+        };
+        reader.readAsDataURL(this.files[0]);
+    }
 });
 
-function switchChart(btn, period) {
-    document.querySelectorAll('.chart-toggle-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    updateChartData(period);
+function removeImg() {
+    document.getElementById('imageInput').value = '';
+    imgPreview.src = '';
+    previewBox.style.display = 'none';
+    // Sabihan ang backend na burahin ang picture
+    let flag = document.getElementById('removeImageFlag');
+    if(!flag) {
+        let input = document.createElement("input");
+        input.setAttribute("type", "hidden");
+        input.setAttribute("name", "remove_current_image");
+        input.setAttribute("id", "removeImageFlag");
+        input.setAttribute("value", "1");
+        document.querySelector('form').appendChild(input);
+    } else {
+        flag.value = "1";
+    }
 }
 
-function updateChartData(period) {
-    const newData = formatData(dataSets[period]);
-    xAxis.data.setAll(newData);
-    chartSeries.data.setAll(newData);
-    chartSeries.appear(500);
-}
+// Drag & drop
+const zone = document.getElementById('uploadZone');
+zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('drag-over'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) {
+        document.getElementById('imageInput').files = e.dataTransfer.files;
+        const reader = new FileReader();
+        reader.onload = ev => { imgPreview.src = ev.target.result; previewBox.style.display = 'block'; };
+        reader.readAsDataURL(file);
+    }
+});
 </script>
 </body>
 </html>

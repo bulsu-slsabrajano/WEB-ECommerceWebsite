@@ -21,7 +21,7 @@ try {
     $ordersStmt = $conn->prepare("
         SELECT
             o.order_id, o.order_date, o.total_amount, o.order_status,
-            oi.quantity, oi.price, oi.subtotal,
+            oi.quantity, p.price, oi.subtotal,
             p.product_id, p.name AS product_name, p.image_url
         FROM orders o
         INNER JOIN order_items oi ON o.order_id = oi.order_id
@@ -76,7 +76,7 @@ body { background: #fff; }
 .tab-btn:hover { background: #f0ebe0; color: #7A2E2E; }
 .order-card { border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; margin-bottom: 20px; background: #fff; }
 .product-img { width: 100px; height: 85px; object-fit: cover; border-radius: 10px; border: 1px solid #ddd; }
-.completed-badge { color: #198754; font-weight: 700; font-size: 0.95rem; }
+.completed-badge { background: #d1f5e0; color: #198754; font-weight: 700; font-size: 0.88rem; padding: 5px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; }
 .empty-state { text-align: center; padding: 60px 0; color: #aaa; }
 </style>
 </head>
@@ -126,12 +126,9 @@ body { background: #fff; }
                 <?php else: ?>
                     <?php foreach ($orders as $order): ?>
                         <div class="order-card">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="mb-3">
                                 <span class="text-muted small">
                                     <?= date("F j, Y", strtotime($order['order_date'])) ?>
-                                </span>
-                                <span class="completed-badge">
-                                    <i class="fa-solid fa-circle-check"></i> Completed
                                 </span>
                             </div>
 
@@ -150,9 +147,14 @@ body { background: #fff; }
                                 </div>
                             <?php endforeach; ?>
 
-                            <div class="d-flex justify-content-end align-items-center border-top pt-3 mt-2">
-                                <span class="text-muted me-2">Order Total:</span>
-                                <span class="fw-bold fs-5" style="color:#7A2E2E;">₱<?= number_format($order['total_amount'], 2) ?></span>
+                            <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-2">
+                                <span class="completed-badge">
+                                    <i class="fa-solid fa-circle-check"></i> Completed
+                                </span>
+                                <div class="text-end">
+                                    <span class="text-muted">Order Total: </span>
+                                    <span class="fw-bold fs-5" style="color:#7A2E2E;">₱<?= number_format($order['total_amount'], 2) ?></span>
+                                </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
